@@ -4,12 +4,12 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   
-  <title>photo-map:一款Web站点的地图相册 | 搅拌糖</title>
+  <title>PHPer-浅层次的代码优化 | 搅拌糖</title>
   
-  <meta name="keywords" content="地图相册, 搅拌糖,搅拌糖°,搅拌糖的个人博客">
+  <meta name="keywords" content="浅层次的代码优化, 搅拌糖,搅拌糖°,搅拌糖的个人博客">
   
   
-  <meta name="description" content="地图相册, 种一棵树最好的时间是十年前，其次是现在">
+  <meta name="description" content="浅层次的代码优化, 种一棵树最好的时间是十年前，其次是现在">
   
 
   
@@ -249,17 +249,14 @@
 
   <section class='meta'>
     
-      
-
-    
     
     <div class="meta" id="header-meta">
       
         
   
     <h1 class="title">
-      <a href="/2019/06/09/photo-map/">
-        photo-map:一款Web站点的地图相册
+      <a href="/2019/04/02/php-coding3/">
+        PHPer-浅层次的代码优化
       </a>
     </h1>
   
@@ -290,7 +287,7 @@
             <div class="new-meta-item date">
   <a class='notlink'>
     <i class="fas fa-calendar-alt" aria-hidden="true"></i>
-    <p>2019-06-09</p>
+    <p>2019-04-02</p>
   </a>
 </div>
 
@@ -300,9 +297,9 @@
             
   
   <div class='new-meta-item category'>
-    <a href='/categories/Coding/Web/' rel="nofollow">
+    <a href='/categories/Coding/' rel="nofollow">
       <i class="fas fa-folder-open" aria-hidden="true"></i>
-      <p>Coding&nbsp;/&nbsp;Web</p>
+      <p>Coding</p>
     </a>
   </div>
 
@@ -342,12 +339,44 @@
 
     <section class="article typo">
       <div class="article-entry" itemprop="articleBody">
-        <p><img src="https://imgkr.cn-bj.ufileos.com/27d939c7-c90f-42cb-9ff2-2a3eef64b41d.png" alt=""></p>
-<a id="more"></a>
-<p><img src="https://imgkr.cn-bj.ufileos.com/0575977b-fc6e-4bdf-bb69-66f3cb224960.png" alt=""><br><img src="https://imgkr.cn-bj.ufileos.com/cf1b1463-e9a1-4923-b3f7-69e66b513a15.png" alt=""><br><a href="https://github.com/JIAOBANTANG/photo-map" target="_blank" rel="noopener">github</a><br><a href="https://photo.treelo.xin/" target="_blank" rel="noopener">运行站点</a></p>
-<p>我想的是记录一些日子，一些足迹<br>我是一颗蒲公英，在飘着，落脚扎根。<br>在这里渲染一个点，星星满满。<br>总有一天，想去都去，该看都看。<br>我记录着，我扩散着,<br>能留下一点，在创造一点.<br>…<br>你好 陌生人<br>这一刻，不为别的，你来都来了，看都看了，你也可以去部署啊，部署后也传播给你的朋友，能贡献代码那就更感谢你了。<br>希望你生活快乐<br>◕‿-</p>
-<p>感谢<br><a href="https://github.com/Leaflet/Leaflet" target="_blank" rel="noopener">Leaflet</a>用于基础地图交互<br><a href="https://github.com/turban/Leaflet.Photo" target="_blank" rel="noopener">Leaflet.Photo</a>用于渲染图片位置<br><a href="https://github.com/htoooth/Leaflet.ChineseTmsProviders" target="_blank" rel="noopener">Leaflet.ChineseTmsProviders</a>用于各种地图样式<br><a href="https://www.layui.com/" target="_blank" rel="noopener">layui</a>用于前端交互<br><a href="https://github.com/fengyuanchen/viewerjs/" target="_blank" rel="noopener">viewerjs</a>用于查看图片<br><a href="https://www.amap.com/" target="_blank" rel="noopener">高德地图</a>用于获取位置信息<br><a href="https://github.com/Vectorface/GoogleAuthenticator" target="_blank" rel="noopener">googleauthenticator</a>用于谷歌身份验证器验证<br><a href="https://github.com/rosell-dk/webp-convert" target="_blank" rel="noopener">webp-convert</a>用于压缩图为webp格式</p>
-<p>建议留给留言区</p>
+        <a id="more"></a>
+<h2 id="说在前面"><a href="#说在前面" class="headerlink" title="说在前面"></a>说在前面</h2><p>代码优化是一个持续不断的过程，养成一个好的编码习惯，善用一些PHP的语法糖，让我们的代码看起来更好维护更不容易出错，这本身就是一种优化。还有一种就是对代码的可读性再做一次优化，让代码更好维护。</p>
+<h2 id="if的使用技巧"><a href="#if的使用技巧" class="headerlink" title="if的使用技巧"></a>if的使用技巧</h2><h3 id="if的使用技巧之-“给定初始值”"><a href="#if的使用技巧之-“给定初始值”" class="headerlink" title="if的使用技巧之 “给定初始值”"></a>if的使用技巧之 “给定初始值”</h3><p>来看一段代码</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(<span class="number">1</span> == $orderState)&#123;</span><br><span class="line">    $orderTitle = <span class="string">"已预定"</span>;</span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    $orderTitle = <span class="string">"已售出"</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">return</span> $orderTitle;</span><br></pre></td></tr></table></figure>
+<p>给定初始值之后，我们可以写成这样，少了一层else</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$orderTitle = <span class="string">'已售出'</span>;</span><br><span class="line"><span class="keyword">if</span>(<span class="number">1</span> == $orderState)&#123;</span><br><span class="line">    $orderTitle = <span class="string">'已预定'</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">return</span> $orderTitle;</span><br></pre></td></tr></table></figure>
+<h3 id="if的使用技巧之-“用-amp-amp-替换-if”"><a href="#if的使用技巧之-“用-amp-amp-替换-if”" class="headerlink" title="if的使用技巧之 “用 &amp;&amp; 替换 if”"></a>if的使用技巧之 “用 &amp;&amp; 替换 if”</h3> <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"> <span class="keyword">if</span>(!<span class="keyword">isset</span>($newpwd[<span class="number">6</span>]))&#123;</span><br><span class="line">    $message = <span class="string">'密码长度不足'</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p> 可以替换成<br> <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">!<span class="keyword">isset</span>($newpwd[<span class="number">6</span>]) &amp;&amp; $message = <span class="string">'密码长度不足'</span>;</span><br></pre></td></tr></table></figure></p>
+<h3 id="if的使用技巧之“三元运算符替换if”"><a href="#if的使用技巧之“三元运算符替换if”" class="headerlink" title="if的使用技巧之“三元运算符替换if”"></a>if的使用技巧之“三元运算符替换if”</h3> <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(<span class="keyword">empty</span>($_post[<span class="string">'action'</span>]))&#123;</span><br><span class="line">    $action = <span class="string">'default'</span>;</span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    $action = $_POST[<span class="string">'action'</span>];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>也可以替换成</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$action = (<span class="keyword">empty</span>($_post[<span class="string">'action'</span>]))? <span class="string">'default'</span> : $_post[<span class="string">'action'</span>];</span><br></pre></td></tr></table></figure>
+<p>也可以把三元运算符简写成</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$action = $_post[<span class="string">'action'</span>]?:<span class="string">'default'</span>;</span><br></pre></td></tr></table></figure>
+<h3 id="if的使用技巧之-“去掉多此一举的if”"><a href="#if的使用技巧之-“去掉多此一举的if”" class="headerlink" title="if的使用技巧之 “去掉多此一举的if”"></a>if的使用技巧之 “去掉多此一举的if”</h3><p>这个函数是判断一个年份是否是闰年，如果是返回ture否则返回false</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">isLeapYear</span><span class="params">($year)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(($year % <span class="number">4</span> == <span class="number">0</span> &amp;&amp; $year % <span class="number">100</span> != <span class="number">0</span>) || ($year % <span class="number">400</span> == <span class="number">0</span>))&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>类似于这种判断一个条件是否为真，为真返回ture为假返回false的时候，我们可以直接返回这个条件就可以了</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">isLeapYear</span><span class="params">($year)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> ($year % <span class="number">4</span> == <span class="number">0</span> &amp;&amp; $year % <span class="number">100</span> != <span class="number">0</span>) || ($year % <span class="number">400</span> == <span class="number">0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="改进“else-if”"><a href="#改进“else-if”" class="headerlink" title="改进“else if”"></a>改进“else if”</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(<span class="string">'你'</span>==$sortname)&#123;</span><br><span class="line">    $sortid = <span class="number">1</span>;</span><br><span class="line">&#125;<span class="keyword">else</span> <span class="keyword">if</span>(<span class="string">'还'</span>==$sortname)&#123;</span><br><span class="line">    $sortid = <span class="number">2</span>;</span><br><span class="line">&#125;<span class="keyword">else</span> <span class="keyword">if</span>(<span class="string">'好'</span>==$sortname)&#123;</span><br><span class="line">    $sortid = <span class="number">3</span>;</span><br><span class="line">&#125;<span class="keyword">else</span> <span class="keyword">if</span>(<span class="string">'吗'</span>==$sortname)&#123;</span><br><span class="line">    $sortid = <span class="number">4</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以用switch来改造多层的判断</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">switch</span>($sortname)&#123;</span><br><span class="line">    <span class="keyword">case</span><span class="string">'你'</span>:</span><br><span class="line">        $sortid = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span><span class="string">'还'</span>:</span><br><span class="line">        $sortid = <span class="number">2</span>;</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span><span class="string">'好'</span>:</span><br><span class="line">        $sortid = <span class="number">3</span>;</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span><span class="string">'吗'</span>:</span><br><span class="line">        $sortid = <span class="number">4</span>;</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="表驱动法替代“else-if”"><a href="#表驱动法替代“else-if”" class="headerlink" title="表驱动法替代“else if”"></a>表驱动法替代“else if”</h3><p>上面那个例子用switch似乎让代码变多了，但看起来更简洁了，如果你还不爽，那下面。。。<br>在PHP里面数组可以理解为一个hash表</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$sortTable = [</span><br><span class="line">    <span class="string">'你'</span>=&gt;<span class="number">1</span>,</span><br><span class="line">    <span class="string">'还'</span>=&gt;<span class="number">2</span>,</span><br><span class="line">    <span class="string">'好'</span>=&gt;<span class="number">3</span>,</span><br><span class="line">    <span class="string">'吗'</span>=&gt;<span class="number">4</span></span><br><span class="line">];</span><br><span class="line">$sortid = $sorTable[$sortname];</span><br></pre></td></tr></table></figure>
+
+<h2 id="循环语句的几个要点"><a href="#循环语句的几个要点" class="headerlink" title="循环语句的几个要点"></a>循环语句的几个要点</h2><blockquote>
+<p>要写无限循环时，用while(true)表示无限循环，别用for。<br>特定情况下(发邮件、采集网页)要加延时(sleep)<br>循环体内尽可能不用函数或更消耗资源的调用<br>foreach代替while和for循环(PHP)<br>避免空循环<br>只做一件事，尽可能短，控制在50行以内<br>循环嵌套限制在3曾以内</p>
+</blockquote>
+<h3 id="使用更精悍短小的代码"><a href="#使用更精悍短小的代码" class="headerlink" title="使用更精悍短小的代码"></a>使用更精悍短小的代码</h3><blockquote>
+<p>函数的最佳最大长度时50-150行代码<br>函数参不超过7个<br>短小函数更容易理解也方便修改<br>只做一件事情的函数更易于复用<br>短小的函数测试更方便</p>
+</blockquote>
+<h2 id="中间结果赋值给变量"><a href="#中间结果赋值给变量" class="headerlink" title="中间结果赋值给变量"></a>中间结果赋值给变量</h2><p>$str = ‘this_is_a_test’;<br>$humpstr = implode(‘’,array_map(‘ucfirst’,explode(‘_’,$str)));<br>你觉得这样写好不好呢？我以为这样很cool，一行就搞定，实际上这样写并不好，乍一看不好理解，另外还不好调试。那怎么改造这种代码呢？把中间结果赋值给变量</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$str = <span class="string">'this_is_a_test'</span>;</span><br><span class="line">$words = explode(<span class="string">'_'</span>,$str);</span><br><span class="line">$uWords = array_map(<span class="string">'ucfirst'</span>,$words);</span><br><span class="line">$humpstr = implode(<span class="string">''</span>,$uWords);</span><br></pre></td></tr></table></figure>
+<h2 id="复杂的逻辑表达式做成布尔函数"><a href="#复杂的逻辑表达式做成布尔函数" class="headerlink" title="复杂的逻辑表达式做成布尔函数"></a>复杂的逻辑表达式做成布尔函数</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(!$hasone &amp;&amp; <span class="number">1</span>==$ddisfirst &amp;&amp; <span class="string">''</span>==$litpic &amp;&amp;<span class="keyword">empty</span>($litpicname))&#123;</span><br><span class="line">    $litpicname = GetImageMapDD($iurl,$cfg_ddimg_width);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>你像这样四个条件并在一起满足的条件下才会执行下面的代码，是不是会很难理解，所以复杂的逻辑表达式做成布尔函数，就是把它给切开</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$emptyPic = ( <span class="string">''</span>==$litpic &amp;&amp;<span class="keyword">empty</span>($litpicname);</span><br><span class="line">$validFirstPic = (!$hasone &amp;&amp; <span class="number">1</span>==$ddisfirst &amp;&amp; <span class="string">''</span>);</span><br><span class="line"><span class="keyword">if</span>($emptyPic &amp;&amp; $validFirstPic)&#123;</span><br><span class="line">    $litpicname = GetImageMapDD($iurl,$cfg_ddimg_width);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="永远不要复制粘贴雷同的代码"><a href="#永远不要复制粘贴雷同的代码" class="headerlink" title="永远不要复制粘贴雷同的代码"></a>永远不要复制粘贴雷同的代码</h2><blockquote>
+<p>相同的代码放在一起让以后修改更轻松<br>可以让全局的统计和过滤器等实现方便<br>可复用的带参函数是解决雷同代码的好方法</p>
+</blockquote>
 
       </div>
       
@@ -359,10 +388,10 @@
     <div class='new-meta-box'>
       
         
-          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2020-01-01T21:34:41+08:00">
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2020-01-02T17:37:45+08:00">
   <a class='notlink'>
     <i class="fas fa-clock" aria-hidden="true"></i>
-    <p>更新于 2020年1月1日</p>
+    <p>更新于 2020年1月2日</p>
   </a>
 </div>
 
@@ -371,7 +400,7 @@
         
           
   
-  <div class="new-meta-item meta-tags"><a class="tag" href="/tags/%E5%9C%B0%E5%9B%BE%E7%9B%B8%E5%86%8C/" rel="nofollow"><i class="fas fa-tag" aria-hidden="true"></i><p>地图相册</p></a></div>
+  <div class="new-meta-item meta-tags"><a class="tag" href="/tags/Coding/" rel="nofollow"><i class="fas fa-tag" aria-hidden="true"></i><p>Coding</p></a></div>
 
 
         
@@ -384,7 +413,7 @@
       
         <a class="-mob-share-qq" title="QQ好友" rel="external nofollow noopener noreferrer"
           
-          href="http://connect.qq.com/widget/shareqq/index.html?url=https://jiaobantang.github.io/2019/06/09/photo-map/&title=photo-map:一款Web站点的地图相册 | 搅拌糖&summary="
+          href="http://connect.qq.com/widget/shareqq/index.html?url=https://jiaobantang.github.io/2019/04/02/php-coding3/&title=PHPer-浅层次的代码优化 | 搅拌糖&summary="
           
           >
           
@@ -396,7 +425,7 @@
       
         <a class="-mob-share-qzone" title="QQ空间" rel="external nofollow noopener noreferrer"
           
-          href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://jiaobantang.github.io/2019/06/09/photo-map/&title=photo-map:一款Web站点的地图相册 | 搅拌糖&summary="
+          href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://jiaobantang.github.io/2019/04/02/php-coding3/&title=PHPer-浅层次的代码优化 | 搅拌糖&summary="
           
           >
           
@@ -408,7 +437,7 @@
       
         <a class="-mob-share-weibo" title="微博" rel="external nofollow noopener noreferrer"
           
-          href="http://service.weibo.com/share/share.php?url=https://jiaobantang.github.io/2019/06/09/photo-map/&title=photo-map:一款Web站点的地图相册 | 搅拌糖&summary="
+          href="http://service.weibo.com/share/share.php?url=https://jiaobantang.github.io/2019/04/02/php-coding3/&title=PHPer-浅层次的代码优化 | 搅拌糖&summary="
           
           >
           
@@ -432,21 +461,40 @@
       
           <div class="prev-next">
               
-              
-                  <section class="next">
-                      <span class="art-item-right" aria-hidden="true">
-                          <h6>下一页&nbsp;<i class="fas fa-chevron-right" aria-hidden="true"></i></h6>
+                  <section class="prev">
+                      <span class="art-item-left">
+                          <h6><i class="fas fa-chevron-left" aria-hidden="true"></i>&nbsp;上一页</h6>
                           <h4>
                               <a href="/2019/05/12/themes-custom/" rel="prev" title="Hexo博客Material-X主题个性化">
-                                  
-                                      Hexo博客Material-X主题个性化
-                                  
+                                
+                                    Hexo博客Material-X主题个性化
+                                
                               </a>
                           </h4>
                           
                               
                               <h6 class="tags">
                                   <a class="tag" href="/tags/Cool/"><i class="fas fa-tag fa-fw" aria-hidden="true"></i> Cool</a>
+                              </h6>
+                          
+                      </span>
+                  </section>
+              
+              
+                  <section class="next">
+                      <span class="art-item-right" aria-hidden="true">
+                          <h6>下一页&nbsp;<i class="fas fa-chevron-right" aria-hidden="true"></i></h6>
+                          <h4>
+                              <a href="/2019/04/02/php-coding2/" rel="prev" title="PHPer-语法糖">
+                                  
+                                      PHPer-语法糖
+                                  
+                              </a>
+                          </h4>
+                          
+                              
+                              <h6 class="tags">
+                                  <a class="tag" href="/tags/Coding/"><i class="fas fa-tag fa-fw" aria-hidden="true"></i> Coding</a>
                               </h6>
                           
                       </span>
@@ -490,7 +538,7 @@
 
   <script>
     window.subData = {
-      title: 'photo-map:一款Web站点的地图相册',
+      title: 'PHPer-浅层次的代码优化',
       tools: true
     }
   </script>
@@ -582,6 +630,20 @@
           
             
               
+  <section class='widget toc-wrapper'>
+    
+<header class='pure'>
+  <div><i class="fas fa-list fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;本文目录</div>
+  
+    <!-- <div class='wrapper'><a class="s-toc rightBtn" rel="external nofollow noopener noreferrer noopener" href="javascript:void(0)" target="_blank"><i class="fas fa-thumbtack fa-fw"></i></a></div> -->
+  
+</header>
+
+    <div class='content pure'>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#说在前面"><span class="toc-text">说在前面</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#if的使用技巧"><span class="toc-text">if的使用技巧</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#if的使用技巧之-“给定初始值”"><span class="toc-text">if的使用技巧之 “给定初始值”</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#if的使用技巧之-“用-amp-amp-替换-if”"><span class="toc-text">if的使用技巧之 “用 &amp;&amp; 替换 if”</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#if的使用技巧之“三元运算符替换if”"><span class="toc-text">if的使用技巧之“三元运算符替换if”</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#if的使用技巧之-“去掉多此一举的if”"><span class="toc-text">if的使用技巧之 “去掉多此一举的if”</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#改进“else-if”"><span class="toc-text">改进“else if”</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#表驱动法替代“else-if”"><span class="toc-text">表驱动法替代“else if”</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#循环语句的几个要点"><span class="toc-text">循环语句的几个要点</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#使用更精悍短小的代码"><span class="toc-text">使用更精悍短小的代码</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#中间结果赋值给变量"><span class="toc-text">中间结果赋值给变量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#复杂的逻辑表达式做成布尔函数"><span class="toc-text">复杂的逻辑表达式做成布尔函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#永远不要复制粘贴雷同的代码"><span class="toc-text">永远不要复制粘贴雷同的代码</span></a></li></ol>
+    </div>
+  </section>
+
 
             
           
