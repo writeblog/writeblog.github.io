@@ -4,6 +4,33 @@
   
     
     <entry>
+      <title>Swoole-协程概述</title>
+      <link href="/2020/01/03/swoole-coroutine/"/>
+      <url>/2020/01/03/swoole-coroutine/</url>
+      
+        <content type="html"><![CDATA[<p><img src="https://imgkr.cn-bj.ufileos.com/3f8987e9-b28e-49c8-808f-504dd0d51ed9.png" alt=""></p><a id="more"></a><h2 id="什么是进程？"><a href="#什么是进程？" class="headerlink" title="什么是进程？"></a>什么是进程？</h2><p>进程就是应用程序的启动实例。独立的文件资源，数据资源，内存空间。</p><h2 id="什么是线程？"><a href="#什么是线程？" class="headerlink" title="什么是线程？"></a>什么是线程？</h2><p>线程属于进程，是程序的执行者。一个进程至少包含一个主线程，也可以有更多的子线程。线程有两种调度策略，一是：分时调度，二是：抢占式调度。</p><h2 id="什么是协程？"><a href="#什么是协程？" class="headerlink" title="什么是协程？"></a>什么是协程？</h2><p>协程是轻量级线程，协程也是属于线程，协程是在线程里执行的。协程的调度是用户手动切换的，所以又叫用户空间线程。协程的创建、切换、挂起、销毁全部为内存操作，消耗是非常低的。协程的调度策略是：协作式调度。</p><h2 id="Swoole-协程的原理"><a href="#Swoole-协程的原理" class="headerlink" title="Swoole 协程的原理"></a>Swoole 协程的原理</h2><ol><li><p>Swoole4 由于是单线程多进程的，同一时间同一个进程只会有一个协程在运行。</p></li><li><p>Swoole server 接收数据在 worker 进程触发 onReceive 回调，产生一个携程。Swoole 为每个请求创建对应携程。协程中也能创建子协程。</p></li><li><p>协程在底层实现上是单线程的，因此同一时间只有一个协程在工作，协程的执行是串行的。</p></li><li><p>因此多任务多协程执行时，一个协程正在运行时，其他协程会停止工作。当前协程执行阻塞 IO 操作时会挂起，底层调度器会进入事件循环。当有 IO 完成事件时，底层调度器恢复事件对应的协程的执行。。所以协程不存在 IO 耗时，非常适合高并发 IO 场景。（如下图）<br><img src="https://app.yinxiang.com/FileSharing.action?hash=1/e9fd1d4b9024633dcf00f8e41cb4164d-260032" alt=""></p></li></ol><h2 id="Swoole-的协程执行流程"><a href="#Swoole-的协程执行流程" class="headerlink" title="Swoole 的协程执行流程"></a>Swoole 的协程执行流程</h2><ul><li><p>协程没有 IO 等待 正常执行 PHP 代码，不会产生执行流程切换</p></li><li><p>协程遇到 IO 等待 立即将控制权切，待 IO 完成后，重新将执行流切回原来协程切出的点</p></li><li><p>协程并行协程依次执行，同上一个逻辑</p></li><li><p>协程嵌套执行流程由外向内逐层进入，直到发生 IO，然后切到外层协程，父协程不会等待子协程结束</p></li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> Coding </category>
+          
+          <category> Swoole </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Swoole </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>设计模式-创建型-单例模式(Singleton)</title>
       <link href="/2020/01/03/design-singleton/"/>
       <url>/2020/01/03/design-singleton/</url>
