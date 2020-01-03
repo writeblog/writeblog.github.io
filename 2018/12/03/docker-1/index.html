@@ -1,0 +1,1494 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  
+  <title>Docker入门并搭建PHP（LNMP）运行环境 | 搅拌糖</title>
+  
+  <meta name="keywords" content="docker入门,docker搭建php运行环境, 搅拌糖,搅拌糖°,搅拌糖的个人博客">
+  
+  
+  <meta name="description" content="Docker入门并搭建PHP（LNMP）运行环境, 种一棵树最好的时间是十年前，其次是现在">
+  
+
+  
+  <link rel="shortcut icon" type="image/ico" href="/favicon.ico"/>
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <!-- meta -->
+  
+
+  <!-- link -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-waves@0.7.6/dist/waves.min.css">
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.10.1/css/all.min.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/style.css">
+  
+
+  <script>
+    function setLoadingBarProgress(num) {
+      document.getElementById('loading-bar').style.width=num+"%";
+    }
+  </script>
+
+  
+  
+  <!-- 血小板-->
+<link rel="stylesheet" href="/live2d/css/live2d.css" />
+</head>
+
+<body>
+  
+  
+  <div class="cover-wrapper">
+    <cover class='cover post half'>
+      
+        
+  <img class='logo shake' src='http://cdn.treelo.xin/avatar.png'/>
+
+
+  <div class="m_search">
+    <form name="searchform" class="form u-search-form">
+      <input type="text" class="input u-search-input" placeholder="" />
+      <i class="icon fas fa-search fa-fw"></i>
+    </form>
+  </div>
+
+<div class='menu navgation'>
+  <ul class='h-list'>
+    
+      
+        <li>
+          <a class="nav home" href="/"
+            
+            
+            id="home">
+            <i class='fas fa-rss fa-fw'></i>&nbsp;博文
+          </a>
+        </li>
+      
+        <li>
+          <a class="nav home" href="/projects/"
+            
+            
+            id="projects">
+            <i class='fas fa-code-branch fa-fw'></i>&nbsp;项目
+          </a>
+        </li>
+      
+        <li>
+          <a class="nav home" href="/friends/"
+            
+              rel="nofollow"
+            
+            
+            id="friends">
+            <i class='fas fa-link fa-fw'></i>&nbsp;友链
+          </a>
+        </li>
+      
+        <li>
+          <a class="nav home" href="/about/"
+            
+              rel="nofollow"
+            
+            
+            id="about">
+            <i class='fas fa-info-circle fa-fw'></i>&nbsp;关于
+          </a>
+        </li>
+      
+    
+  </ul>
+</div>
+
+      
+    </cover>
+    <header class="l_header pure">
+  <div id="loading-bar-wrapper">
+    <div id="loading-bar" class="pure"></div>
+  </div>
+
+	<div class='wrapper'>
+		<div class="nav-main container container--flex">
+      <a class="logo flat-box" href='/' >
+        
+          搅拌糖
+        
+      </a>
+			<div class='menu navgation'>
+				<ul class='h-list'>
+          
+  					
+  						<li>
+								<a class="nav flat-box" href="/"
+                  
+                  
+                  id="home">
+									<i class='fas fa-shapes fa-fw'></i>&nbsp;博客
+								</a>
+							</li>
+      			
+  						<li>
+								<a class="nav flat-box" href="/categories/"
+                  
+                    rel="nofollow"
+                  
+                  
+                  id="categories">
+									<i class='fas fa-calendar-alt fa-fw'></i>&nbsp;归档
+								</a>
+							</li>
+      			
+  						<li>
+								<a class="nav flat-box" href="/2018/11/11/message/"
+                  
+                    rel="nofollow"
+                  
+                  
+                  id="20181111message">
+									<i class='fas fa-comment-alt fa-fw'></i>&nbsp;留言
+								</a>
+							</li>
+      			
+      		
+				</ul>
+			</div>
+
+			
+				<div class="m_search">
+					<form name="searchform" class="form u-search-form">
+						<input type="text" class="input u-search-input" placeholder="搜索" />
+						<i class="icon fas fa-search fa-fw"></i>
+					</form>
+				</div>
+			
+			<ul class='switcher h-list'>
+				
+					<li class='s-search'><a class="fas fa-search fa-fw" href='javascript:void(0)' target="_blank" rel="noopener"></a></li>
+				
+				<li class='s-menu'><a class="fas fa-bars fa-fw" href='javascript:void(0)' target="_blank" rel="noopener"></a></li>
+			</ul>
+		</div>
+
+		<div class='nav-sub container container--flex'>
+			<a class="logo flat-box"></a>
+			<ul class='switcher h-list'>
+				<li class='s-comment'><a class="flat-btn fas fa-comments fa-fw" href='javascript:void(0)' target="_blank" rel="noopener"></a></li>
+        
+          <li class='s-toc'><a class="flat-btn fas fa-list fa-fw" href='javascript:void(0)' target="_blank" rel="noopener"></a></li>
+        
+			</ul>
+		</div>
+	</div>
+</header>
+	<aside class="menu-phone">
+    <header>
+		<nav class="menu navgation">
+      <ul>
+        
+          
+            <li>
+							<a class="nav flat-box" href="/"
+                
+                
+                id="home">
+								<i class='fas fa-shapes fa-fw'></i>&nbsp;博客
+							</a>
+            </li>
+          
+            <li>
+							<a class="nav flat-box" href="/categories/"
+                
+                  rel="nofollow"
+                
+                
+                id="categories">
+								<i class='fas fa-calendar-alt fa-fw'></i>&nbsp;归档
+							</a>
+            </li>
+          
+            <li>
+							<a class="nav flat-box" href="/2018/11/11/message/"
+                
+                  rel="nofollow"
+                
+                
+                id="20181111message">
+								<i class='fas fa-comment-alt fa-fw'></i>&nbsp;留言
+							</a>
+            </li>
+          
+       
+      </ul>
+		</nav>
+    </header>
+	</aside>
+<script>setLoadingBarProgress(40);</script>
+
+  </div>
+
+
+  <div class="l_body">
+    <div class='body-wrapper'>
+      <div class='l_main'>
+  
+
+  <article id="post" class="post white-box article-type-post" itemscope itemprop="blogPost">
+    
+
+
+  <section class='meta'>
+    
+    
+    <div class="meta" id="header-meta">
+      
+        
+  
+    <h1 class="title">
+      <a href="/2018/12/03/docker-1/">
+        Docker入门并搭建PHP（LNMP）运行环境
+      </a>
+    </h1>
+  
+
+
+      
+      <div class='new-meta-box'>
+        
+          
+        
+          
+            
+  <div class='new-meta-item author'>
+    
+      <a href="https://jiaobantang.github.io" rel="nofollow">
+        
+          <i class="fas fa-user" aria-hidden="true"></i>
+        
+        <p>搅拌糖</p>
+      </a>
+    
+  </div>
+
+
+          
+        
+          
+            <div class="new-meta-item date">
+  <a class='notlink'>
+    <i class="fas fa-calendar-alt" aria-hidden="true"></i>
+    <p>2018-12-03</p>
+  </a>
+</div>
+
+          
+        
+          
+            
+  
+  <div class='new-meta-item category'>
+    <a href='/categories/Coding/Docker/' rel="nofollow">
+      <i class="fas fa-folder-open" aria-hidden="true"></i>
+      <p>Coding&nbsp;/&nbsp;Docker</p>
+    </a>
+  </div>
+
+
+          
+        
+          
+            
+  
+    <div class="new-meta-item browse busuanzi">
+      <a class='notlink'>
+        <i class="fas fa-eye" aria-hidden="true"></i>
+        <p>
+          <span id="busuanzi_value_page_pv">
+            <i class="fas fa-spinner fa-spin fa-fw" aria-hidden="true"></i>
+          </span>
+        </p>
+      </a>
+    </div>
+  
+
+
+          
+        
+          
+            
+
+          
+        
+      </div>
+      
+        <hr>
+      
+    </div>
+  </section>
+
+
+    <section class="article typo">
+      <div class="article-entry" itemprop="articleBody">
+        <h2 id="Docker的简单介绍"><a href="#Docker的简单介绍" class="headerlink" title="Docker的简单介绍"></a>Docker的简单介绍</h2><h3 id="1、docker是什么？"><a href="#1、docker是什么？" class="headerlink" title="1、docker是什么？"></a>1、docker是什么？</h3><p>docker 是一个开源的应用容器引擎，基于Go语言实现，属于操作系统层面的虚拟技术。</p>
+<p>docker可以让开发者打包他们的应用以及依赖包到一个轻量级、可移植的容器中，然后发布到任何安装有docker的电脑上。</p>
+<p>容器是完全使用沙盒机制，相互之间不会有任何接口（类似 iphone 的 app），更重要的是容器性能开销较低</p>
+<p><img src="https://ws3.sinaimg.cn/large/005BYqpgly1fxtm2k4s07j30pu09zwgk.jpg" alt=""></p>
+<a id="more"></a>
+
+<h3 id="2、docker能够做什么？"><a href="#2、docker能够做什么？" class="headerlink" title="2、docker能够做什么？"></a>2、docker能够做什么？</h3><p>docker可以解决虚拟机能够解决的问题，同时也能够解决虚拟机由于电脑资源要求过高而无法解决的问题</p>
+<p><img src="https://ws3.sinaimg.cn/large/005BYqpgly1fxtm3ejhpgj30ma0dpgoh.jpg" alt=""></p>
+<p><img src="https://ws3.sinaimg.cn/large/005BYqpgly1fxtm3tnd9mj30lt0awmz1.jpg" alt=""></p>
+<h3 id="3、为什么使用docker"><a href="#3、为什么使用docker" class="headerlink" title="3、为什么使用docker"></a>3、为什么使用docker</h3><p><strong>1更快速的交付和部署</strong><br>对开发和运维员来说，最希望的就是一次创建或配置，可以在任意地方正常运行。</p>
+<p>例如：开发者可以使用一个标准的镜像来构建一套开发容器，开发完成之后，运维人员可以直接使用这个容器来部署代码。Docker 容器很轻很快！容器的启动时间是秒级的，大量地节约开发、测试、部署的时间。节约安装各种开发环境的软件的时间。解决开发环境和生产环境不一致的问题。</p>
+<p><strong>2、更轻松的迁移和扩展：</strong><br>Docker 容器几乎可以在任意的平台上运行，包括物理机、虚拟机、公有云、私有云、个人电脑、服务器等。 这种兼容性可以让用户把一个应用程序从一个平台直接迁移到另外一个。</p>
+<p><strong>3、更高的资源利用率：</strong><br>Docker 是<code>容器技术</code>，和虚拟机非常像，都可以在主机上隔离出多个独立的子系统，它们最大的区别在于虚拟机是从主机中完全隔离出一个系统来，而容器技术和主机是共享系统内核的。因为这些Docker 对系统资源的利用率很高，一台主机上可以同时运行数千个 Docker 容器。容器除了运行其中应用外，基本不消耗额外的系统资源，使得应用的性能很高，同时系统的开销尽量小。传统虚拟机方式运行 10 个不同的应用就要起 10 个虚拟机，而Docker 只需要启动 10 个隔离的应用容器即可。</p>
+<p><strong>总结：</strong><br>Docker背后的想法是创建软件程序可移植的轻量级容器，让其可以在任何安装了Docker的机器上运行，并不用关心底层操作系统，就像野心勃勃的造船者们成功创建了集装箱而不需要考虑装在哪种船舶上一样。</p>
+<p><strong>只有一个共同目标：简化部署流程，提高生产力！</strong> </p>
+<h3 id="4、Docker快速体验-wordpress搭建"><a href="#4、Docker快速体验-wordpress搭建" class="headerlink" title="4、Docker快速体验-wordpress搭建"></a>4、Docker快速体验-wordpress搭建</h3><p>WordPress是使用PHP语言开发的博客平台，用户可以在支持PHP和MySQL数据库的服务器上架设属于自己的网站。也可以把 WordPress当作一个内容管理系统（CMS）来使用。<br>wordpress的运行环境已经全部打包好了,同时wordpress也被打包进去了，所以紧紧几个命令就可以搞定了。<br><strong>首先下载mysql</strong></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull mysql:<span class="number">5.7</span></span><br></pre></td></tr></table></figure>
+
+<p>*<em>下载wordpress镜像 *</em></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull wordpress</span><br></pre></td></tr></table></figure>
+
+<p>*<em>安装MySQL容器 *</em></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run --name mysql -e MYSQL_ROOT_PASSWORD=admin -p <span class="number">3306</span>:<span class="number">3306</span> -d mysql:<span class="number">5.7</span></span><br></pre></td></tr></table></figure>
+<p><strong>安装wordpress</strong></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -itd --name wordpress -e WORDPRESS_DB_HOST=mysql -e WORDPRESS_DB_PASSWORD=admin -p <span class="number">8080</span>:<span class="number">80</span>  --link  mysql:mysql -d wordpress</span><br></pre></td></tr></table></figure>
+
+<p>*<em>访问wordpress *</em></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">localhost:<span class="number">8080</span>或者<span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">8080</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="5、docker-项目架构"><a href="#5、docker-项目架构" class="headerlink" title="5、docker 项目架构"></a>5、docker 项目架构</h3><p>如果我们相对docker有个深入的理解我们必须先认识docker的项目架构</p>
+<p>Docker使用C/S架构，通过docker客户端连接到Docker服务器上从而管理Docker服务器里面的镜像和容器，类似于git的架构。      </p>
+<p><img src="https://ws3.sinaimg.cn/large/005BYqpgly1fxtm4t35stj30j30ai0wh.jpg" alt=""></p>
+<h3 id="6、Docker的基本概念"><a href="#6、Docker的基本概念" class="headerlink" title="6、Docker的基本概念"></a>6、Docker的基本概念</h3><p><strong>镜像（images）</strong><br>Docker 镜像（Image）就是一个只读的模板。例如：一个镜像可以包含一个完整的操作系统环境，里面仅安装了 Apache 或用户需要的其它应用程序。镜像可以用来创建 Docker 容器，一个镜像可以创建很多容器。Docker 提供了一个很简单的机制来创建镜像或者更新现有的镜像，用户甚至可以直接从其他人那里下载一个已经做好的镜像来<br>直接使用。</p>
+<p><strong>容器（Conrainer）</strong><br>Docker 利用容器（Container）来运行应用。容器是从镜像创建的运行实例。它可以被启动、开始、停止、删除。每个容器都是相互隔离的、保证安全的平台。可以把容器看做是一个易版的 Linux 环境（包括root用户权限、进程空间、用户空间和网络空间等）和运行在其中的应用程序。</p>
+<p>文件系统隔离技术使得Docker成为了一个非常有潜力的虚拟化技术。在容器中可以对文件进行修改、删除、创建。</p>
+<p><strong>仓库（Registry）</strong><br>仓库（Repository）是集中存放镜像文件的场所。有时候会把仓库和仓库注册服务器（Registry）混为一谈，并不严格区分。实际上，仓库注册服务器上往往存放着多个仓库，每个仓库中又包含了多个镜像，每个镜像有不同的标签（tag）。</p>
+<p>仓库分为公开仓库（Public）和私有仓库（Private）两种形式。最大的公开仓库是 Docker Hub，存放了数量庞大的镜像供用户下载。国内的公开仓库包括 时速云 、网易云 等，可以提供大陆用户更稳定快速的访问。当然，用户也可以在本地网络内创建一个私有仓库。</p>
+<p>当用户创建了自己的镜像之后就可以使用 push 命令将它上传到公有或者私有仓库，这样下次在另外一台机器上使用这个镜像时候，只需要从仓库上 pull 下来就可以了。Docker  仓库的概念跟  Git  类似，注册服务器可以理解为GitHub 这样的托管服务。</p>
+<p><strong>Dockerfile</strong><br><code>Dockerfile</code> 是一个文本文件，其内包含了一条条的<code>指令</code>(Instruction)，每一条指令构建一层，因此每一条指令的内容，就是描述该层应当如何构建。<br>一般用来定制镜像</p>
+<h2 id="Docker常用的指令和参数"><a href="#Docker常用的指令和参数" class="headerlink" title="Docker常用的指令和参数"></a>Docker常用的指令和参数</h2><p>一般我们都是用指令操作来操作docker的</p>
+<h3 id="常用指令"><a href="#常用指令" class="headerlink" title="常用指令"></a>常用指令</h3><table>
+<thead>
+<tr>
+<th>指令</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>docker images</td>
+<td>查看已下载的镜像</td>
+</tr>
+<tr>
+<td>docker rmi 镜像名称:标签名</td>
+<td>删除已下载的镜像</td>
+</tr>
+<tr>
+<td>docker search 镜像</td>
+<td>从官方仓库（hub.docker.com）查找镜像</td>
+</tr>
+<tr>
+<td>docker pull 镜像名称:标签名</td>
+<td>标签名默认是 latest，代表最新版本。</td>
+</tr>
+<tr>
+<td>docker run</td>
+<td>创建容器</td>
+</tr>
+<tr>
+<td>docker ps</td>
+<td>列出运行中的容器（运行中）</td>
+</tr>
+<tr>
+<td>docker ps -a</td>
+<td>列出未运行的容器</td>
+</tr>
+<tr>
+<td>docker rm 容器名称</td>
+<td>删除停止的容器</td>
+</tr>
+<tr>
+<td>docker rm -f 容器名称</td>
+<td>删除运行中的容器</td>
+</tr>
+<tr>
+<td>docker start 容器名称</td>
+<td>启动容器</td>
+</tr>
+<tr>
+<td>docker stop 容器名称</td>
+<td>停止容器</td>
+</tr>
+<tr>
+<td>docker restart 容器名称</td>
+<td>重启容器</td>
+</tr>
+<tr>
+<td>docker exec</td>
+<td>执行容器中的指令</td>
+</tr>
+<tr>
+<td>### 常用参数</td>
+<td></td>
+</tr>
+<tr>
+<td>下载了镜像之后，我们就可以通过镜像来创建容器，创建容器时常用的参数是：</td>
+<td></td>
+</tr>
+<tr>
+<td><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run --name 容器名称 -d -p 主机端口:容器内端口 -e 环境变量 --link 其它容器名:容器中别名 镜像名称:标签名</span><br></pre></td></tr></table></figure></td>
+<td></td>
+</tr>
+</tbody></table>
+<p>参数说明：</p>
+<ul>
+<li><p>–name：指定容器名称</p>
+</li>
+<li><p>-d：容器在后台运行</p>
+</li>
+<li><p>-p：绑定端口号，容器内部的端口号无法在外部访问，必须经过绑定之后才可以访问</p>
+</li>
+<li><p>–link：连接其它容器，当要访问其它容器中的内容时，需要先链接才可以使用</p>
+</li>
+<li><p>-e：设置容器中的环境变量</p>
+<h2 id="Docker的常用操作"><a href="#Docker的常用操作" class="headerlink" title="Docker的常用操作"></a>Docker的常用操作</h2><h3 id="创建容器"><a href="#创建容器" class="headerlink" title="创建容器"></a>创建容器</h3><p>创建一个 MySQL 容器，密码是123456，绑定本地 33306 端口到容器中 3306 端口：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run --name mysql01 -d -p 33306:3306 -e MYSQL_ROOT_PASSWORD=123456 mysql:5.7</span><br></pre></td></tr></table></figure>
+<p>说明：MYSQL_ROOT_PASSWORD 环境变量用来设置这个容器中 MySQL 的密码</p>
+</li>
+</ul>
+<p>创建之后，会启动这个容器，如果启动成功，就可以使用 <code>docker ps</code> 指令查看到：</p>
+<p>启动之后，这个容器内部就运行了 MySQL 服务器，在容器内部监听的是 3306 端口，我们已经将这个端口绑定到了主机的 33306 端口上，所以我们在主机上可以使用 33306 端口连接</p>
+<h3 id="进入容器"><a href="#进入容器" class="headerlink" title="进入容器"></a>进入容器</h3><p>有时我们需要进入到一个容器内部去操作这个容器，这时我们可以使用 <code>docker exec</code> 指令来实现。</p>
+<p>docker exec 指令可以执行一个运行着的容器中的命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker exec -it 容器名称 命令</span><br></pre></td></tr></table></figure>
+
+<p>我们可以通过执行 <code>bash</code> 指令进入容器：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker exec -it mysql01 bash</span><br></pre></td></tr></table></figure>
+
+<p>或者</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker exec -it mysql01 /bin/sh</span><br></pre></td></tr></table></figure>
+
+<p>-it：以实时交互的形式运行（和 -d 正好相反）</p>
+<p>执行之后就进入到了容器中，然后我们输入的命令是在容器中执行的</p>
+<p>执行 <code>exit</code> 指令可以退出容器。</p>
+<h3 id="链接容器"><a href="#链接容器" class="headerlink" title="链接容器"></a>链接容器</h3><p>Docker 推荐我们一个容器中只运行一个主要的应用程序，比如，我们要运行一个 PHP + MySQL 的程序，那么我们应该把 PHP 和 MySQL 放到两个容器中</p>
+<p>默认情况下，容器之间是不能直接通信的，如果要通信必须在创建 PHP 容器时使用 <code>--link</code> 参数建立和 MySQL 容器的链接</p>
+<p>建立连接的参数说明：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">--link 要连接的容器的名称 : 别名</span><br></pre></td></tr></table></figure>
+
+<p>在容器中可以使用别名来访问连接的容器。</p>
+<p>比如，我们现在运行了一个叫做 <code>mysql01</code> 的容器，现在我们要创建一个 PHP 容器并和 MySQL 容器建立链接，指令应该是：</p>
+<p>创建一个 PHP 容器，并且设置和 mysql01 容器建立连接，在 PHP 容器中连接的别名是 mysql</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run --name php01 -d --link mysql01:mysql  php</span><br></pre></td></tr></table></figure>
+
+<p>创建了链接之后，就可以在容器中使用别名来通信了：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 连接 mysql01 容器中的 MySQL 服务器</span></span><br><span class="line">$pdo = <span class="keyword">new</span> PDO(<span class="string">'mysql:host=mysql:33306;dbname=xxx'</span>, <span class="string">'root'</span>, <span class="string">'123456'</span>)</span><br></pre></td></tr></table></figure>
+
+
+
+<p>扩展：我们可以同时添加多个 –link 来同时连接多个容器，比如同时连接mysq01和redis01两个容器：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run --name php01 -d --link mysql01:mysql --link redis01:redis php</span><br></pre></td></tr></table></figure>
+
+<h3 id="挂载硬盘"><a href="#挂载硬盘" class="headerlink" title="挂载硬盘"></a>挂载硬盘</h3><p>问题一、数据是保存在容器里的，如果容器删除了数据也就删除了。</p>
+<p>问题二、每次要修改容器时，必须要进入到容器中去修改，比如要修改my.cnf。</p>
+<p>为了能够保存（持久化）数据以及共享容器间的数据，Docker 提出了 Volume 的概念。</p>
+<p>可以使用 <code>-v</code> 这个参数，将容器中的一个目录或者文件 和主机上的目录和文件进行绑定，绑定之后，修改主机上的这个文件就相当于修改了容器中的文件，删除容器之后，绑定的目录和文件还在主机（不会被删除）。</p>
+<p>为了实现主机和容器之间的数据共享，我们可以在创建容器时添加 <code>-v</code> 参数：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run ... -v 主机目录:容器中的目录 ...</span><br></pre></td></tr></table></figure>
+
+<p>示例：创建 mysql 容器并将数据目录挂载到主机：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run --name mysql02 -d -v /home/home/code/docker-volume-data/testmysql:/var/lib/mysql -p 33307:3306 -e MYSQL_ROOT_PASSWORD=123456 mysql:5.7.24</span><br></pre></td></tr></table></figure>
+
+
+
+<p>示例：启动一个 Nginx 服务器并将 nginx 的主目录搭载到主机上</p>
+<p>1、下载 nginx</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull nginx:1.14.1-alpine</span><br></pre></td></tr></table></figure>
+
+<p>2、到容器中查看网站根目录的路径</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker run --name testnginx -d nginx:1.14.1-alpine   ## 创建容器</span><br><span class="line">docker exec -it testnginx /bin/sh                    ## 进入容器</span><br></pre></td></tr></table></figure>
+
+<p>在容器中使用 vi 编辑器查看配置文件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/nginx/conf.d/default.conf</span><br></pre></td></tr></table></figure>
+
+<p>查看网站根目录是 <code>usr/share/nginx/html</code>。</p>
+<p>删除该容器</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker rm -f testnginx</span><br></pre></td></tr></table></figure>
+
+<p>3、创建 nginx 容器并将 <code>/usr/share/nginx/html</code> 挂载到本地</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run --name nginx01 -d -p 30080:80 -v 本地目录:/usr/share/nginx/html nginx.1.14.1-alpine</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="复制文件"><a href="#复制文件" class="headerlink" title="复制文件"></a>复制文件</h3><p>我们可以使用 <code>docker cp</code> 指令向容器中复制文件，或者从容器中复制文件到主机。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker cp 源目录  目标目录</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>复制主机文件到容器<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker cp C:/my.cnf mysql01:/etc/mysql/my.cnf</span><br></pre></td></tr></table></figure></li>
+<li>从容器复制文件到主机<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker cp  mysql01:/etc/mysql/my.cnf C:/my.cnf</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h2 id="使用-Docker-搭建-LNMP-环境"><a href="#使用-Docker-搭建-LNMP-环境" class="headerlink" title="使用 Docker 搭建 LNMP 环境"></a>使用 Docker 搭建 LNMP 环境</h2><p>平时在做开发时，为了简单、方便常用以下开发环境：<br>1、WAMP<br>2、Visual AMP\NMP<br>3、PHP 内置 WEB 服务器，如 <code>php -S localhost:9999 -t</code> 还有 Laravel 中的 <code>php artisan serve --port 801</code> 。<br>以上这三种只适用于开发时使用，在真正的线上环境我们需要安装更加稳定并且能够支撑高并发的运行环境，目前 PHP 的生产环境最常用的就是 <code>LNMP</code>。</p>
+<p><strong>LNMP：Linux + Nginx + MySQL + PHP</strong></p>
+<h3 id="Nginx"><a href="#Nginx" class="headerlink" title="Nginx"></a>Nginx</h3><p>Nginx 是目前最流行的高性能、高并发的开源、免费的 WEB 服务器，俄罗斯人开发的。</p>
+<p>Nginx 使用 Linux 中最流行的 <code>epoll</code> 做为事件处理机制，并且 Nginx 在运行时只消耗极少的系统资源，所以可以轻松实现上万的并发请求，Nginx 除了可以做为 WEB 服务器之外，还可以做为Email、反向代理、负载均衡、流媒体等服务器。<br>Nginx 和其它脚本语言（如PHP）一起工作时一般使用 FastCGI 机制。</p>
+<h3 id="方案"><a href="#方案" class="headerlink" title="方案"></a>方案</h3><p><strong>方案一、一个容器中同时运行 nginx php-mpm</strong><br>​    好处：简单、方便<br>​    缺点：不利于每个软件的横向扩展<br><strong>方案二、把 nginx、php-fpm、MySQL 分别放到三个容器中</strong><br>​    好处：有利于单独扩展每个系统<br>​    缺点：部署相对复杂<br>我选择的是方案二</p>
+<h3 id="LNMP-模型图"><a href="#LNMP-模型图" class="headerlink" title="LNMP 模型图"></a>LNMP 模型图</h3><p>创建三个容器：Nginx、PHP-FPM、MySQL，它们之间的关系是：<br>（说明：图中端口可以任意修改）<br><img src="https://ws3.sinaimg.cn/large/005BYqpgly1fxtma9px91j31es088my0.jpg" alt=""></p>
+<p>总结：Nginx 负载处理静态文件，如果用户访问的是 PHP 文件，就转发给 PHP 服务器的9000来处理，PHP服务器处理完之后，把结果返回给 nginx,然后nginx再返回给前端。</p>
+<p><strong>1、下载镜像</strong></p>
+<p>下载 nginx 镜像（alpine版的更小）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull nginx:1.14-1-alpine</span><br></pre></td></tr></table></figure>
+<p>下载 MySQL 镜像</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull mysql:5.7</span><br></pre></td></tr></table></figure>
+<p>下载 PHP-FPM 镜像</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull php:7.2-fpm-alpine</span><br></pre></td></tr></table></figure>
+
+
+<p><strong>2、创建容器</strong></p>
+<p>我们创建三个容器 Nginx、PHP-FPM、MySQL，这里需要注意的是它们创建的顺序：</p>
+<p>MySQL =&gt; PHP-FPM =&gt; Nginx</p>
+<p>创建 MySQL 容器</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run --name mysql01 -d -p 33306:3306 -e MYSQL_ROOT_PASSWORD=123456 mysql:5.7</span><br></pre></td></tr></table></figure>
+
+<p>创建 php 容器</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run --name phpfpm7.2 -d --link mysql01:mysql php:7.2-fpm-alpine</span><br></pre></td></tr></table></figure>
+<p>创建 nginx 容器</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run --name nginx -d -p 8988:80 --link phpfpm7.2:php nginx:1.14.1-alpine</span><br></pre></td></tr></table></figure>
+
+<p>3、配置 Nginx<br>Nginx 只能对静态文件（html，css，js，图片等）进行处理，无法处理动态文件（php、python等），我们需要配置 nginx 将动态脚本转发给 PHP 服务器。<br>a. 进入 nginx 容器</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker exec -it nginx /bin/sh</span><br></pre></td></tr></table></figure>
+
+<p>b、查找配置文件位置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find / -name nginx.conf</span><br></pre></td></tr></table></figure>
+<p>c、修改 Nginx 的配置文件<br>/etc/nginx/conf.d/default.conf</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">    ...</span><br><span class="line">    location / &#123;</span><br><span class="line">        root   /usr/share/nginx/html;    # 网站根目录</span><br><span class="line">        index  index.html index.htm;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    ...</span><br><span class="line">    location ~ \.php$ &#123; </span><br><span class="line">        fastcgi_pass   php:9000;         # 转发到 PHP 服务器的地址,PHP是容器的别名</span><br><span class="line">        fastcgi_index  index.php;        </span><br><span class="line">        fastcgi_param  SCRIPT_FILENAME  /php$fastcgi_script_name;  # 转发的文件名</span><br><span class="line">        include        fastcgi_params;                                </span><br><span class="line">    &#125;   </span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>说明：<br>$fastcgi_script_name ：代表当前访问的文件名，比如，如果访问的是 localhost/1.php ，那么这一项的值就是 1.php<br>d、退出 nginx 容器并重新启该容器<br>因为我们修改了 nginx 的配置文件，所以我们需要重启服务器</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker restart nginx</span><br></pre></td></tr></table></figure>
+<p>e、进入 phpfpm 容器创建 /php 目录<br>在 nginx 中我们配置了，当遇到 PHP 脚本时，就转发 <code>/php$fastcgi_script_name;</code> 这个路径到 php 容器，所以PHP会到它的 <code>/php</code> 目录下去查找，所以我们需要进入 PHP 创建中并创建这个目录。<br>进入PHP容器</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker exec -it phpfpm7.2 /bin/sh</span><br></pre></td></tr></table></figure>
+<p>进入容器之后，创建目录</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir /php</span><br></pre></td></tr></table></figure>
+<p>然后我们就可以在 /php 目录中创建  php 脚本了，这些脚本就可以通过浏览器运行访问了。<br>Nginx 运行PHP的流程：<br><img src="https://ws3.sinaimg.cn/large/005BYqpgly1fxtmcc87rcj30vy0m6abh.jpg" alt=""><br>a、nginx 判断访问的文件以 .php 结尾<br>b、nginx 将 /php/1.php 这个路径传给 PHP 的9000端口<br>c、PHP接收到nginx传过来的路径，就在本机中读取这个文件并运行<br>d、PHP将运行结果返回给 nginx<br>e、NGINX将结果返回给用户</p>
+<h3 id="两个问题"><a href="#两个问题" class="headerlink" title="两个问题"></a>两个问题</h3><p>lnmp环境搭建好了，但是还有些问题需要考虑<br>1、为PHP容器中安装扩展<br>我们使用的是 PHP 默认的镜像，这个镜像中缺少很多必要的 PHP 扩展，比如 gd、redis、pdo_mysql 等，这些扩展都需要单独安装。<br>不过官方提供了安装扩展的两种方法：<br>​    核心扩展（pdo_mysql,gd等） 使用 docker-php-ext-install<br>如安装 gd 库：(先进入PHP容器，然后执行以下命令)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker-php-ext-install gd</span><br></pre></td></tr></table></figure>
+<p>​    其它扩展（redis、yaf、swoole等）使用 pecl<br>如安装 redis：(先进入PHP容器，然后执行以下命令)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pecl install redis</span><br><span class="line">docker-php-ext-enable redis</span><br></pre></td></tr></table></figure>
+<p>2、把两个容器代码的目录都绑定到一个目录中<br>现在我们需要把静态页保存到 nginx 容器中，然后把 php 脚本写到 php 容器中，这样在放代码时比较麻烦，所以我们可以将两个服务器的代码目录都绑定到本机，这样直接在本机就可以编写代码了。<br>a、在本机创建一代码目录<br>b、删除nginx容器重新创建一个新的容器</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run --name nginx -d -p 8888:80 -v 本地目录:/usr/share/nginx/html --link phpfpm7.2:php nginx:1.14.1-alpine</span><br></pre></td></tr></table></figure>
+<p>通过 -v 我们就把 nginx 中网站根目录绑定球果一地的目录中了。<br>创建 nginx 容器之后，重新向前面一样修改一下 <code>/etc/nginx/conf.d/default.conf</code> 配置文件，然后重新启动即可。<br>c、删除PHP容器然后重新创建一个新的容器</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run --name phpfpm7.2 -d -v 本地目录:/php --link mysql01:mysql php:7.2-fpm-alpine</span><br></pre></td></tr></table></figure>
+
+
+
+
+      </div>
+      
+        <br>
+        
+
+
+  <section class='meta' id="footer-meta">
+    <div class='new-meta-box'>
+      
+        
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2020-01-03T16:54:37+08:00">
+  <a class='notlink'>
+    <i class="fas fa-clock" aria-hidden="true"></i>
+    <p>更新于 2020年1月3日</p>
+  </a>
+</div>
+
+        
+      
+        
+          
+  
+  <div class="new-meta-item meta-tags"><a class="tag" href="/tags/docker/" rel="nofollow"><i class="fas fa-tag" aria-hidden="true"></i><p>docker</p></a></div> <div class="new-meta-item meta-tags"><a class="tag" href="/tags/php/" rel="nofollow"><i class="fas fa-tag" aria-hidden="true"></i><p>php</p></a></div>
+
+
+        
+      
+        
+          
+  <div class="new-meta-item share -mob-share-list">
+  <div class="-mob-share-list share-body">
+    
+      
+        <a class="-mob-share-qq" title="QQ好友" rel="external nofollow noopener noreferrer"
+          
+          href="http://connect.qq.com/widget/shareqq/index.html?url=https://jiaobantang.github.io/2018/12/03/docker-1/&title=Docker入门并搭建PHP（LNMP）运行环境 | 搅拌糖&summary=Docker的简单介绍1、docker是什么？docker 是一个开源的应用容器引擎，基于Go语言实现，属于操作系统层面的虚拟技术。
+docker可以让开发者打包他们的应用以及依赖包到一个轻量级、可移植的容器中，然后发布到任何安装有docker的电脑上。
+容器是完全使用沙盒机制，相互之间不会有任何接口（类似 iphone 的 app），更重要的是容器性能开销较低
+"
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/qq.png">
+          
+        </a>
+      
+    
+      
+        <a class="-mob-share-qzone" title="QQ空间" rel="external nofollow noopener noreferrer"
+          
+          href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://jiaobantang.github.io/2018/12/03/docker-1/&title=Docker入门并搭建PHP（LNMP）运行环境 | 搅拌糖&summary=Docker的简单介绍1、docker是什么？docker 是一个开源的应用容器引擎，基于Go语言实现，属于操作系统层面的虚拟技术。
+docker可以让开发者打包他们的应用以及依赖包到一个轻量级、可移植的容器中，然后发布到任何安装有docker的电脑上。
+容器是完全使用沙盒机制，相互之间不会有任何接口（类似 iphone 的 app），更重要的是容器性能开销较低
+"
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/qzone.png">
+          
+        </a>
+      
+    
+      
+        <a class="-mob-share-weibo" title="微博" rel="external nofollow noopener noreferrer"
+          
+          href="http://service.weibo.com/share/share.php?url=https://jiaobantang.github.io/2018/12/03/docker-1/&title=Docker入门并搭建PHP（LNMP）运行环境 | 搅拌糖&summary=Docker的简单介绍1、docker是什么？docker 是一个开源的应用容器引擎，基于Go语言实现，属于操作系统层面的虚拟技术。
+docker可以让开发者打包他们的应用以及依赖包到一个轻量级、可移植的容器中，然后发布到任何安装有docker的电脑上。
+容器是完全使用沙盒机制，相互之间不会有任何接口（类似 iphone 的 app），更重要的是容器性能开销较低
+"
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/weibo.png">
+          
+        </a>
+      
+    
+  </div>
+</div>
+
+
+
+        
+      
+    </div>
+  </section>
+
+
+      
+      
+          <div class="prev-next">
+              
+                  <section class="prev">
+                      <span class="art-item-left">
+                          <h6><i class="fas fa-chevron-left" aria-hidden="true"></i>&nbsp;上一页</h6>
+                          <h4>
+                              <a href="/2018/12/04/docker-colony/" rel="prev" title="集群的介绍">
+                                
+                                    集群的介绍
+                                
+                              </a>
+                          </h4>
+                          
+                              
+                              <h6 class="tags">
+                                  <a class="tag" href="/tags/docker/"><i class="fas fa-tag fa-fw" aria-hidden="true"></i> docker</a>
+                              </h6>
+                          
+                      </span>
+                  </section>
+              
+              
+                  <section class="next">
+                      <span class="art-item-right" aria-hidden="true">
+                          <h6>下一页&nbsp;<i class="fas fa-chevron-right" aria-hidden="true"></i></h6>
+                          <h4>
+                              <a href="/2018/11/26/snowflake/" rel="prev" title="PHP版本的（snowflake）">
+                                  
+                                      PHP版本的（snowflake）
+                                  
+                              </a>
+                          </h4>
+                          
+                              
+                              <h6 class="tags">
+                                  <a class="tag" href="/tags/snowflake/"><i class="fas fa-tag fa-fw" aria-hidden="true"></i> snowflake</a>
+                              </h6>
+                          
+                      </span>
+                  </section>
+              
+          </div>
+      
+    </section>
+  </article>
+
+
+
+  <!-- 显示推荐文章和评论 -->
+
+
+
+  <article class="post white-box comments">
+    <section class="article typo">
+      <h4><i class="fas fa-comments fa-fw" aria-hidden="true"></i>&nbsp;评论</h4>
+      
+      
+      
+      
+        <section id="comments">
+          <div id="valine_container" class="valine_thread">
+            <i class="fas fa-spinner fa-spin fa-fw"></i>
+          </div>
+        </section>
+      
+    </section>
+  </article>
+
+
+
+
+
+
+<!-- 根据页面mathjax变量决定是否加载MathJax数学公式js -->
+
+
+
+  <script>
+    window.subData = {
+      title: 'Docker入门并搭建PHP（LNMP）运行环境',
+      tools: true
+    }
+  </script>
+
+
+</div>
+<aside class='l_side'>
+  
+    
+    
+      
+      
+        
+          
+          
+            
+              <section class='widget shake author'>
+  <div class='content pure'>
+    
+      <div class='avatar'>
+        <img class='avatar' src='http://cdn.treelo.xin/avatar.png'/>
+      </div>
+    
+    
+    
+      <div class="social-wrapper">
+        
+          
+            <a href="/mailto:847280718@qq.com"
+              class="social fas fa-envelope flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+            </a>
+          
+        
+          
+            <a href="https://github.com/JIAOBANTANG"
+              class="social fab fa-github flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+            </a>
+          
+        
+          
+            <a href="https://codepen.io/jiaobantang/pens/public/"
+              class="social fab fa-codepen flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+            </a>
+          
+        
+          
+            <a href="https://music.163.com/#/user/home?id=65219633"
+              class="social fas fa-headphones-alt flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+            </a>
+          
+        
+      </div>
+    
+  </div>
+</section>
+
+            
+          
+        
+          
+          
+        
+          
+          
+        
+          
+          
+        
+          
+          
+        
+          
+          
+        
+      
+        
+          
+          
+        
+          
+          
+            
+              
+  <section class='widget toc-wrapper'>
+    
+<header class='pure'>
+  <div><i class="fas fa-list fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;本文目录</div>
+  
+    <!-- <div class='wrapper'><a class="s-toc rightBtn" rel="external nofollow noopener noreferrer noopener" href="javascript:void(0)" target="_blank"><i class="fas fa-thumbtack fa-fw"></i></a></div> -->
+  
+</header>
+
+    <div class='content pure'>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Docker的简单介绍"><span class="toc-text">Docker的简单介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1、docker是什么？"><span class="toc-text">1、docker是什么？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、docker能够做什么？"><span class="toc-text">2、docker能够做什么？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3、为什么使用docker"><span class="toc-text">3、为什么使用docker</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4、Docker快速体验-wordpress搭建"><span class="toc-text">4、Docker快速体验-wordpress搭建</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5、docker-项目架构"><span class="toc-text">5、docker 项目架构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6、Docker的基本概念"><span class="toc-text">6、Docker的基本概念</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Docker常用的指令和参数"><span class="toc-text">Docker常用的指令和参数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#常用指令"><span class="toc-text">常用指令</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Docker的常用操作"><span class="toc-text">Docker的常用操作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#创建容器"><span class="toc-text">创建容器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#进入容器"><span class="toc-text">进入容器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#链接容器"><span class="toc-text">链接容器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#挂载硬盘"><span class="toc-text">挂载硬盘</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#复制文件"><span class="toc-text">复制文件</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用-Docker-搭建-LNMP-环境"><span class="toc-text">使用 Docker 搭建 LNMP 环境</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Nginx"><span class="toc-text">Nginx</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#方案"><span class="toc-text">方案</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#LNMP-模型图"><span class="toc-text">LNMP 模型图</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#两个问题"><span class="toc-text">两个问题</span></a></li></ol></li></ol>
+    </div>
+  </section>
+
+
+            
+          
+        
+          
+          
+        
+          
+          
+        
+          
+          
+        
+          
+          
+        
+      
+        
+          
+          
+        
+          
+          
+        
+          
+          
+            
+              <section class='widget grid'>
+  
+<header class='pure'>
+  <div><i class="fas fa-map-signs fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;站内导航</div>
+  
+</header>
+
+  <div class='content pure'>
+    <ul class="grid navgation">
+      
+        <li><a class="flat-box" title="/" href="/"
+          
+          
+          id="home">
+          
+            <i class="fas fa-clock fa-fw" aria-hidden="true"></i>
+          
+          近期文章
+        </a></li>
+      
+        <li><a class="flat-box" title="/archives/" href="/archives/"
+          
+            rel="nofollow"
+          
+          
+          id="archives">
+          
+            <i class="fas fa-archive fa-fw" aria-hidden="true"></i>
+          
+          文章归档
+        </a></li>
+      
+        <li><a class="flat-box" title="/projects/" href="/projects/"
+          
+          
+          id="projects">
+          
+            <i class="fas fa-code-branch fa-fw" aria-hidden="true"></i>
+          
+          开源项目
+        </a></li>
+      
+        <li><a class="flat-box" title="/friends/" href="/friends/"
+          
+            rel="nofollow"
+          
+          
+          id="friends">
+          
+            <i class="fas fa-link fa-fw" aria-hidden="true"></i>
+          
+          我的友链
+        </a></li>
+      
+        <li><a class="flat-box" title="/about/" href="/about/"
+          
+            rel="nofollow"
+          
+          
+          id="about">
+          
+            <i class="fas fa-info-circle fa-fw" aria-hidden="true"></i>
+          
+          关于小站
+        </a></li>
+      
+    </ul>
+  </div>
+</section>
+
+            
+          
+        
+          
+          
+        
+          
+          
+        
+          
+          
+        
+      
+        
+          
+          
+        
+          
+          
+        
+          
+          
+        
+          
+          
+            
+              
+  <section class='widget category'>
+    
+<header class='pure'>
+  <div><i class="fas fa-folder-open fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;文章分类</div>
+  
+    <a class="rightBtn"
+    
+      rel="nofollow"
+    
+    
+    href="/blog/categories/"
+    title="blog/categories/">
+    <i class="fas fa-expand-arrows-alt fa-fw"></i></a>
+  
+</header>
+
+    <div class='content pure'>
+      <ul class="entry">
+        
+          <li><a class="flat-box" title="/categories/Coding/" href="/categories/Coding/"><div class='name'>Coding</div><div class='badge'>(15)</div></a></li>
+        
+          <li><a class="flat-box child" title="/categories/Coding/Docker/" href="/categories/Coding/Docker/"><div class='name'>Docker</div><div class='badge'>(5)</div></a></li>
+        
+          <li><a class="flat-box child" title="/categories/Coding/JS/" href="/categories/Coding/JS/"><div class='name'>JS</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box child" title="/categories/Coding/MySQL/" href="/categories/Coding/MySQL/"><div class='name'>MySQL</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box child" title="/categories/Coding/PHP/" href="/categories/Coding/PHP/"><div class='name'>PHP</div><div class='badge'>(2)</div></a></li>
+        
+          <li><a class="flat-box child" title="/categories/Coding/PSR/" href="/categories/Coding/PSR/"><div class='name'>PSR</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box child" title="/categories/Coding/Web/" href="/categories/Coding/Web/"><div class='name'>Web</div><div class='badge'>(3)</div></a></li>
+        
+          <li><a class="flat-box" title="/categories/PHP/" href="/categories/PHP/"><div class='name'>PHP</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box" title="/categories/Self/" href="/categories/Self/"><div class='name'>Self</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box" title="/categories/%E8%A1%80%E5%B0%8F%E6%9D%BF/" href="/categories/%E8%A1%80%E5%B0%8F%E6%9D%BF/"><div class='name'>血小板</div><div class='badge'>(1)</div></a></li>
+        
+      </ul>
+    </div>
+  </section>
+
+
+            
+          
+        
+          
+          
+        
+          
+          
+        
+      
+        
+          
+          
+        
+          
+          
+        
+          
+          
+        
+          
+          
+        
+          
+          
+            
+              
+  <section class='widget tagcloud'>
+    
+<header class='pure'>
+  <div><i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;热门标签</div>
+  
+    <a class="rightBtn"
+    
+      rel="nofollow"
+    
+    
+    href="/blog/tags/"
+    title="blog/tags/">
+    <i class="fas fa-expand-arrows-alt fa-fw"></i></a>
+  
+</header>
+
+    <div class='content pure'>
+      <a href="/tags/Coding/" style="font-size: 19px; color: #777">Coding</a> <a href="/tags/Cool/" style="font-size: 14px; color: #999">Cool</a> <a href="/tags/JavaScript/" style="font-size: 14px; color: #999">JavaScript</a> <a href="/tags/MySQL/" style="font-size: 14px; color: #999">MySQL</a> <a href="/tags/OOP/" style="font-size: 14px; color: #999">OOP</a> <a href="/tags/PDO/" style="font-size: 14px; color: #999">PDO</a> <a href="/tags/PHP/" style="font-size: 14px; color: #999">PHP</a> <a href="/tags/docker/" style="font-size: 24px; color: #555">docker</a> <a href="/tags/live2D/" style="font-size: 14px; color: #999">live2D</a> <a href="/tags/nginx/" style="font-size: 14px; color: #999">nginx</a> <a href="/tags/php/" style="font-size: 14px; color: #999">php</a> <a href="/tags/snowflake/" style="font-size: 14px; color: #999">snowflake</a> <a href="/tags/%E5%9C%B0%E5%9B%BE%E7%9B%B8%E5%86%8C/" style="font-size: 14px; color: #999">地图相册</a> <a href="/tags/%E6%8E%A5%E5%8F%A3%E5%BC%80%E5%8F%91/" style="font-size: 14px; color: #999">接口开发</a> <a href="/tags/%E6%94%B9%E5%8F%98/" style="font-size: 14px; color: #999">改变</a> <a href="/tags/%E6%97%A5%E7%AD%BE/" style="font-size: 14px; color: #999">日签</a> <a href="/tags/%E6%9C%8D%E5%8A%A1%E7%AB%AF/" style="font-size: 14px; color: #999">服务端</a> <a href="/tags/%E7%B3%96%E7%B3%96%E6%97%A5%E7%AD%BE/" style="font-size: 14px; color: #999">糖糖日签</a> <a href="/tags/%E8%87%AA%E6%88%91%E5%8F%91%E5%B1%95/" style="font-size: 14px; color: #999">自我发展</a> <a href="/tags/%E8%A1%80%E5%B0%8F%E6%9D%BF/" style="font-size: 14px; color: #999">血小板</a>
+    </div>
+  </section>
+
+
+            
+          
+        
+          
+          
+        
+      
+        
+          
+          
+        
+          
+          
+        
+          
+          
+        
+          
+          
+        
+          
+          
+        
+          
+          
+            
+              <section class='widget list'>
+  
+<header class='pure'>
+  <div><i class="fas fa-thumbs-up fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;强烈推荐</div>
+  
+</header>
+
+  <div class='content pure'>
+    <ul class="entry">
+      
+        <li><a class="flat-box" title="/2019/06/09/photo-map/" href="/2019/06/09/photo-map/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class=" fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;地图相册
+          </div>
+          
+        </a></li>
+      
+    </ul>
+  </div>
+</section>
+
+            
+          
+        
+      
+        
+          
+          
+        
+          
+          
+        
+          
+          
+        
+          
+          
+        
+          
+          
+        
+          
+          
+        
+      
+    
+
+  
+</aside>
+
+<footer id="footer" class="clearfix">
+  
+  
+    <div class="social-wrapper">
+      
+        
+          <a href="/mailto:847280718@qq.com"
+            class="social fas fa-envelope flat-btn"
+            target="_blank"
+            rel="external nofollow noopener noreferrer">
+          </a>
+        
+      
+        
+          <a href="https://github.com/JIAOBANTANG"
+            class="social fab fa-github flat-btn"
+            target="_blank"
+            rel="external nofollow noopener noreferrer">
+          </a>
+        
+      
+        
+          <a href="https://codepen.io/jiaobantang/pens/public/"
+            class="social fab fa-codepen flat-btn"
+            target="_blank"
+            rel="external nofollow noopener noreferrer">
+          </a>
+        
+      
+        
+          <a href="https://music.163.com/#/user/home?id=65219633"
+            class="social fas fa-headphones-alt flat-btn"
+            target="_blank"
+            rel="external nofollow noopener noreferrer">
+          </a>
+        
+      
+    </div>
+  
+  <br>
+  <div>
+    <div class="footer">
+      <p><span style="color:rgb(61, 197, 80);">种一棵树最好的时间是十年前，其次是现在</span></p>
+
+    </div>
+
+  </div>
+  <!-- <div><p>博客內容遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh_TW" target="_blank" rel="noopener">姓名標示-非商業性-相同方式分享 4.0 國際 (CC BY-NC-SA 4.0) 協議</a></p>
+</div> -->
+  <div>
+    本站使用
+    <a href="https://xaoxuu.com/wiki/material-x/" target="_blank" class="codename">Material X</a>
+    作为主题
+    
+      ，
+      总访问量为
+      <span id="busuanzi_value_site_pv"><i class="fas fa-spinner fa-spin fa-fw" aria-hidden="true"></i></span>
+      次
+    
+    。
+  </div>
+  <div id="sitetime"></div>
+</footer>
+<script>setLoadingBarProgress(80);</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.0/jquery.min.js"></script>
+<!-- 血小板 -->
+<div id="landlord">
+  <div class="message" style="opacity:0"></div>
+  <canvas id="live2d" width="560" height="500" class="live2d"></canvas>
+  <div class="hide-button">隐藏</div>
+</div>
+<!-- 血小板-->
+<script type="text/javascript">
+  var message_Path = '/live2d/'
+</script>
+<script type="text/javascript" src="/live2d/js/live2d.js"></script>
+<script type="text/javascript" src="/live2d/js/message.js"></script>
+<script type="text/javascript">
+  loadlive2d("live2d", "/live2d/model/xiaoban/model.json");
+</script>
+<!-- 点击特效，输入特效 运行时间 -->
+<script type="text/javascript" src="/cool/cooltext.js"></script>
+<script type="text/javascript" src="/cool/clicklove.js"></script>
+<script type="text/javascript" src="/cool/sitetime.js"></script>
+<script type="text/javascript" src="/cool/banner.js"></script>
+
+
+      <script>setLoadingBarProgress(60);</script>
+    </div>
+    <a class="s-top fas fa-arrow-up fa-fw" href='javascript:void(0)' target="_blank" rel="noopener"></a>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+
+  <script>
+    var GOOGLE_CUSTOM_SEARCH_API_KEY = "";
+    var GOOGLE_CUSTOM_SEARCH_ENGINE_ID = "";
+    var ALGOLIA_API_KEY = "";
+    var ALGOLIA_APP_ID = "";
+    var ALGOLIA_INDEX_NAME = "";
+    var AZURE_SERVICE_NAME = "";
+    var AZURE_INDEX_NAME = "";
+    var AZURE_QUERY_KEY = "";
+    var BAIDU_API_ID = "";
+    var SEARCH_SERVICE = "hexo" || "hexo";
+    var ROOT = "/"||"/";
+    if(!ROOT.endsWith('/'))ROOT += '/';
+  </script>
+
+<script src="//instant.page/1.2.2" type="module" integrity="sha384-2xV8M5griQmzyiY3CDqh1dn4z3llDVqZDqzjzcY+jCBCk/a5fXJmuZ/40JJAPeoU"></script>
+
+
+  <script async src="https://cdn.jsdelivr.net/npm/scrollreveal@4.0.5/dist/scrollreveal.min.js"></script>
+  <script type="text/javascript">
+    $(function() {
+      const $reveal = $('.reveal');
+      if ($reveal.length === 0) return;
+      const sr = ScrollReveal({ distance: 0 });
+      sr.reveal('.reveal');
+    });
+  </script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/node-waves@0.7.6/dist/waves.min.js"></script>
+  <script type="text/javascript">
+    $(function() {
+      Waves.attach('.flat-btn', ['waves-button']);
+      Waves.attach('.float-btn', ['waves-button', 'waves-float']);
+      Waves.attach('.float-btn-light', ['waves-button', 'waves-float', 'waves-light']);
+      Waves.attach('.flat-box', ['waves-block']);
+      Waves.attach('.float-box', ['waves-block', 'waves-float']);
+      Waves.attach('.waves-image');
+      Waves.init();
+    });
+  </script>
+
+
+  <script async src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-busuanzi@2.3/js/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+  
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-backstretch/2.0.4/jquery.backstretch.min.js"></script>
+    <script type="text/javascript">
+      $(function(){
+        if ('.cover') {
+          $('.cover').backstretch(
+          ["https://img.vim-cn.com/29/91197b04c13f512f734a76d4ac422d89dbe229.jpg"],
+          {
+            duration: "6000",
+            fade: "2500"
+          });
+        } else {
+          $.backstretch(
+          ["https://img.vim-cn.com/29/91197b04c13f512f734a76d4ac422d89dbe229.jpg"],
+          {
+            duration: "6000",
+            fade: "2500"
+          });
+        }
+      });
+    </script>
+  
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  
+    
+      <script src="https://cdn.jsdelivr.net/gh/xaoxuu/volantis@1.0.6/js/volantis.min.js"></script>
+    
+  
+  <script>
+  var GUEST_INFO = ['nick','mail','link'];
+  var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+    return GUEST_INFO.indexOf(item) > -1
+  });
+  var notify = 'true' == true;
+  var verify = 'true' == true;
+  var valine = new Valine();
+  valine.init({
+    el: '#valine_container',
+    notify: notify,
+    verify: verify,
+    guest_info: guest_info,
+    
+    appId: "yo0TeECrgG85JBeGdjAUpWyu-gzGzoHsz",
+    appKey: "0u655gRhnOM9X7qL0x2VNFQG",
+    placeholder: "快来评论吧~",
+    pageSize:'10',
+    avatar:'mp',
+    lang:'zh-cn',
+    highlight:'true'
+  })
+  </script>
+
+
+
+  <script src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-material-x@19.9/js/app.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-material-x@19.9/js/search.js"></script>
+
+
+
+
+<!-- 复制 -->
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script>
+  let COPY_SUCCESS = "复制成功";
+  let COPY_FAILURE = "复制失败";
+  /*页面载入完成后，创建复制按钮*/
+  !function (e, t, a) {
+    /* code */
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '  <i class="fa fa-copy"></i><span>复制</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+
+      clipboard.on('success', function(e) {
+        //您可以加入成功提示
+        console.info('Action:', e.action);
+        console.info('Text:', e.text);
+        console.info('Trigger:', e.trigger);
+        success_prompt(COPY_SUCCESS);
+        e.clearSelection();
+      });
+      clipboard.on('error', function(e) {
+        //您可以加入失败提示
+        console.error('Action:', e.action);
+        console.error('Trigger:', e.trigger);
+        fail_prompt(COPY_FAILURE);
+      });
+    }
+    initCopyCode();
+
+  }(window, document);
+
+  /**
+   * 弹出式提示框，默认1.5秒自动消失
+   * @param message 提示信息
+   * @param style 提示样式，有alert-success、alert-danger、alert-warning、alert-info
+   * @param time 消失时间
+   */
+  var prompt = function (message, style, time)
+  {
+      style = (style === undefined) ? 'alert-success' : style;
+      time = (time === undefined) ? 1500 : time*1000;
+      $('<div>')
+          .appendTo('body')
+          .addClass('alert ' + style)
+          .html(message)
+          .show()
+          .delay(time)
+          .fadeOut();
+  };
+
+  // 成功提示
+  var success_prompt = function(message, time)
+  {
+      prompt(message, 'alert-success', time);
+  };
+
+  // 失败提示
+  var fail_prompt = function(message, time)
+  {
+      prompt(message, 'alert-danger', time);
+  };
+
+  // 提醒
+  var warning_prompt = function(message, time)
+  {
+      prompt(message, 'alert-warning', time);
+  };
+
+  // 信息提示
+  var info_prompt = function(message, time)
+  {
+      prompt(message, 'alert-info', time);
+  };
+
+</script>
+
+
+<!-- fancybox -->
+<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+<script>
+  let LAZY_LOAD_IMAGE = "";
+  $(".article-entry").find("fancybox").find("img").each(function () {
+      var element = document.createElement("a");
+      $(element).attr("data-fancybox", "gallery");
+      $(element).attr("href", $(this).attr("src"));
+      /* 图片采用懒加载处理时,
+       * 一般图片标签内会有个属性名来存放图片的真实地址，比如 data-original,
+       * 那么此处将原本的属性名src替换为对应属性名data-original,
+       * 修改如下
+       */
+       if (LAZY_LOAD_IMAGE) {
+         $(element).attr("href", $(this).attr("data-original"));
+       }
+      $(this).wrap(element);
+  });
+</script>
+
+
+
+
+
+  <script>setLoadingBarProgress(100);</script>
+</body>
+</html>
