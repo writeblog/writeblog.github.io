@@ -1,0 +1,1744 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  
+  <title>MySQL优化 | 搅拌糖</title>
+  
+  <meta name="keywords" content="数据库优化, 搅拌糖,搅拌糖°,搅拌糖的个人博客">
+  
+  
+  <meta name="description" content="数据库优化, 种一棵树最好的时间是十年前，其次是现在">
+  
+
+  
+  <link rel="shortcut icon" type="image/ico" href="/favicon.ico"/>
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <!-- meta -->
+  
+
+  <!-- link -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-waves@0.7.6/dist/waves.min.css">
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.10.1/css/all.min.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/style.css">
+  
+
+  <script>
+    function setLoadingBarProgress(num) {
+      document.getElementById('loading-bar').style.width=num+"%";
+    }
+  </script>
+
+  
+  
+  <!-- 血小板-->
+<link rel="stylesheet" href="/live2d/css/live2d.css" />
+</head>
+
+<body>
+  
+  
+  <div class="cover-wrapper">
+    <cover class='cover post half'>
+      
+        
+  <img class='logo shake' src='http://cdn.treelo.xin/avatar.png'/>
+
+
+  <div class="m_search">
+    <form name="searchform" class="form u-search-form">
+      <input type="text" class="input u-search-input" placeholder="" />
+      <i class="icon fas fa-search fa-fw"></i>
+    </form>
+  </div>
+
+<div class='menu navgation'>
+  <ul class='h-list'>
+    
+      
+        <li>
+          <a class="nav home" href="/"
+            
+            
+            id="home">
+            <i class='fas fa-rss fa-fw'></i>&nbsp;博文
+          </a>
+        </li>
+      
+        <li>
+          <a class="nav home" href="/projects/"
+            
+            
+            id="projects">
+            <i class='fas fa-code-branch fa-fw'></i>&nbsp;项目
+          </a>
+        </li>
+      
+        <li>
+          <a class="nav home" href="/friends/"
+            
+              rel="nofollow"
+            
+            
+            id="friends">
+            <i class='fas fa-link fa-fw'></i>&nbsp;友链
+          </a>
+        </li>
+      
+        <li>
+          <a class="nav home" href="/about/"
+            
+              rel="nofollow"
+            
+            
+            id="about">
+            <i class='fas fa-info-circle fa-fw'></i>&nbsp;关于
+          </a>
+        </li>
+      
+    
+  </ul>
+</div>
+
+      
+    </cover>
+    <header class="l_header pure">
+  <div id="loading-bar-wrapper">
+    <div id="loading-bar" class="pure"></div>
+  </div>
+
+	<div class='wrapper'>
+		<div class="nav-main container container--flex">
+      <a class="logo flat-box" href='/' >
+        
+          搅拌糖
+        
+      </a>
+			<div class='menu navgation'>
+				<ul class='h-list'>
+          
+  					
+  						<li>
+								<a class="nav flat-box" href="/"
+                  
+                  
+                  id="home">
+									<i class='fas fa-shapes fa-fw'></i>&nbsp;博客
+								</a>
+							</li>
+      			
+  						<li>
+								<a class="nav flat-box" href="/categories/"
+                  
+                    rel="nofollow"
+                  
+                  
+                  id="categories">
+									<i class='fas fa-calendar-alt fa-fw'></i>&nbsp;归档
+								</a>
+							</li>
+      			
+  						<li>
+								<a class="nav flat-box" href="/2018/11/11/message/"
+                  
+                    rel="nofollow"
+                  
+                  
+                  id="20181111message">
+									<i class='fas fa-comment-alt fa-fw'></i>&nbsp;留言
+								</a>
+							</li>
+      			
+      		
+				</ul>
+			</div>
+
+			
+				<div class="m_search">
+					<form name="searchform" class="form u-search-form">
+						<input type="text" class="input u-search-input" placeholder="搜索" />
+						<i class="icon fas fa-search fa-fw"></i>
+					</form>
+				</div>
+			
+			<ul class='switcher h-list'>
+				
+					<li class='s-search'><a class="fas fa-search fa-fw" href='javascript:void(0)' target="_blank" rel="noopener"></a></li>
+				
+				<li class='s-menu'><a class="fas fa-bars fa-fw" href='javascript:void(0)' target="_blank" rel="noopener"></a></li>
+			</ul>
+		</div>
+
+		<div class='nav-sub container container--flex'>
+			<a class="logo flat-box"></a>
+			<ul class='switcher h-list'>
+				<li class='s-comment'><a class="flat-btn fas fa-comments fa-fw" href='javascript:void(0)' target="_blank" rel="noopener"></a></li>
+        
+          <li class='s-toc'><a class="flat-btn fas fa-list fa-fw" href='javascript:void(0)' target="_blank" rel="noopener"></a></li>
+        
+			</ul>
+		</div>
+	</div>
+</header>
+	<aside class="menu-phone">
+    <header>
+		<nav class="menu navgation">
+      <ul>
+        
+          
+            <li>
+							<a class="nav flat-box" href="/"
+                
+                
+                id="home">
+								<i class='fas fa-shapes fa-fw'></i>&nbsp;博客
+							</a>
+            </li>
+          
+            <li>
+							<a class="nav flat-box" href="/categories/"
+                
+                  rel="nofollow"
+                
+                
+                id="categories">
+								<i class='fas fa-calendar-alt fa-fw'></i>&nbsp;归档
+							</a>
+            </li>
+          
+            <li>
+							<a class="nav flat-box" href="/2018/11/11/message/"
+                
+                  rel="nofollow"
+                
+                
+                id="20181111message">
+								<i class='fas fa-comment-alt fa-fw'></i>&nbsp;留言
+							</a>
+            </li>
+          
+       
+      </ul>
+		</nav>
+    </header>
+	</aside>
+<script>setLoadingBarProgress(40);</script>
+
+  </div>
+
+
+  <div class="l_body">
+    <div class='body-wrapper'>
+      <div class='l_main'>
+  
+
+  <article id="post" class="post white-box article-type-post" itemscope itemprop="blogPost">
+    
+
+
+  <section class='meta'>
+    
+    
+    <div class="meta" id="header-meta">
+      
+        
+  
+    <h1 class="title">
+      <a href="/2018/12/17/mysql-opz/">
+        MySQL优化
+      </a>
+    </h1>
+  
+
+
+      
+      <div class='new-meta-box'>
+        
+          
+        
+          
+            
+  <div class='new-meta-item author'>
+    
+      <a href="https://jiaobantang.github.io" rel="nofollow">
+        
+          <i class="fas fa-user" aria-hidden="true"></i>
+        
+        <p>搅拌糖</p>
+      </a>
+    
+  </div>
+
+
+          
+        
+          
+            <div class="new-meta-item date">
+  <a class='notlink'>
+    <i class="fas fa-calendar-alt" aria-hidden="true"></i>
+    <p>2018-12-17</p>
+  </a>
+</div>
+
+          
+        
+          
+            
+  
+  <div class='new-meta-item category'>
+    <a href='/categories/Coding/MySQL/' rel="nofollow">
+      <i class="fas fa-folder-open" aria-hidden="true"></i>
+      <p>Coding&nbsp;/&nbsp;MySQL</p>
+    </a>
+  </div>
+
+
+          
+        
+          
+            
+  
+    <div class="new-meta-item browse busuanzi">
+      <a class='notlink'>
+        <i class="fas fa-eye" aria-hidden="true"></i>
+        <p>
+          <span id="busuanzi_value_page_pv">
+            <i class="fas fa-spinner fa-spin fa-fw" aria-hidden="true"></i>
+          </span>
+        </p>
+      </a>
+    </div>
+  
+
+
+          
+        
+          
+            
+
+          
+        
+      </div>
+      
+        <hr>
+      
+    </div>
+  </section>
+
+
+    <section class="article typo">
+      <div class="article-entry" itemprop="articleBody">
+        <h2 id="从四个方面来复习一下数据库的优化"><a href="#从四个方面来复习一下数据库的优化" class="headerlink" title="从四个方面来复习一下数据库的优化"></a>从四个方面来复习一下数据库的优化</h2><ol>
+<li>表引擎优化：建表时选择最合适的引擎。</li>
+<li>表结构优化：建表时选择最合适的字段类型，让表尽量轻量。</li>
+<li>索引优化：为表创建高效索引，以提高表的查询速度。</li>
+<li>SQL 优化：编写高效的 SQL 语句，以加快查询速度。<a id="more"></a>
+<h3 id="表引擎优化"><a href="#表引擎优化" class="headerlink" title="表引擎优化"></a>表引擎优化</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">--查看表引擎</span></span><br><span class="line"><span class="keyword">show</span> <span class="keyword">engines</span></span><br></pre></td></tr></table></figure>
+<h4 id="InnoDB"><a href="#InnoDB" class="headerlink" title="InnoDB"></a>InnoDB</h4>InnoDB是官方默认的引擎，特点：</li>
+<li>支持事务</li>
+<li>支持外键约束</li>
+<li>行级锁（在并发修改数据时效率更高）</li>
+<li>可以从灾难中恢复（更加安全）</li>
+<li>新版的 InnoDB 性能也非常好</li>
+<li>每个表会在硬盘上生成两个文件：.frm 文件（保存表结构），.ibd（保存数据）<h4 id="MyISAM"><a href="#MyISAM" class="headerlink" title="MyISAM"></a>MyISAM</h4>MyISAM 引擎是 MySQL 最早支持的一种引擎，它的特点是：</li>
+<li>读、写速度非常快</li>
+<li>表级锁</li>
+<li>不支持事务</li>
+<li>不支持外键约束</li>
+<li>无法自动从灾难中恢复</li>
+<li>每个表会在硬盘上生成三个文件：.frm 文件（保存表结构），.MYI（保存索引），MYD（保存数据）<h4 id="MRG-MyISAM-MERGE"><a href="#MRG-MyISAM-MERGE" class="headerlink" title="MRG_MyISAM (MERGE)"></a>MRG_MyISAM (MERGE)</h4>MRG_MyISAM 引擎的表用来对多个结构相同的表进行数据的合并、汇总，可以用来实现 <code>MyISAM</code> 引擎的水平分表功能。</li>
+</ol>
+<p>创建这种类型的表时会在硬盘上生成两个文件：.frm（保存表结构），.MRG（保存所有分表名称）</p>
+<ol>
+<li>创建 n 个 MyISAM 引擎的表并保存分表的数据</li>
+<li>创建 1 个 MRG_MyISAM 引擎的表用来汇总这 n 个引擎中的数据，一般这个表是只读的<br>注意：这个引擎只帮助我们解决读数据汇总的问题，写数据的问题需要我们自己用程序来实现。</li>
+</ol>
+<p><strong>创建汇总表</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> xxx&#123;</span><br><span class="line">    ...</span><br><span class="line">&#125; <span class="keyword">engine</span>=MRG_MyISAM <span class="keyword">union</span>=(分表列表) INSERT_METHOD=插入类型;</span><br></pre></td></tr></table></figure>
+<p>INSERT_METHOD可用的值为：</p>
+<p>0：不能插入（默认）</p>
+<p>first：插入到第一个表中</p>
+<p>last：插入到最后一个表中</p>
+<p>示例</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> t1(</span><br><span class="line">    <span class="keyword">id</span> <span class="built_in">int</span>,</span><br><span class="line">    <span class="keyword">name</span> <span class="built_in">varchar</span>(<span class="number">10</span>)</span><br><span class="line">)<span class="keyword">engine</span>=MyISAM;</span><br><span class="line"></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> t2(</span><br><span class="line">    <span class="keyword">id</span> <span class="built_in">int</span>,</span><br><span class="line">    <span class="keyword">name</span> <span class="built_in">varchar</span>(<span class="number">10</span>)</span><br><span class="line">)<span class="keyword">engine</span>=MyISAM;</span><br><span class="line"></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> t3(</span><br><span class="line">    <span class="keyword">id</span> <span class="built_in">int</span>,</span><br><span class="line">    <span class="keyword">name</span> <span class="built_in">varchar</span>(<span class="number">10</span>)</span><br><span class="line">)<span class="keyword">engine</span>=MyISAM;</span><br><span class="line"></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> t(</span><br><span class="line">    <span class="keyword">id</span> <span class="built_in">int</span>,</span><br><span class="line">    <span class="keyword">name</span> <span class="built_in">varchar</span>(<span class="number">10</span>)</span><br><span class="line">)<span class="keyword">engine</span>=MRG_MyISAM</span><br><span class="line"><span class="keyword">union</span>=(t1,t2,t3) INSERT_METHOD=<span class="number">0</span>;</span><br></pre></td></tr></table></figure>
+<p>总结：</p>
+<p>1、这个引擎只支持 MyISAM 引擎的水平分表</p>
+<p>2、这个引擎只能帮助我们进行读操作汇总，而写入的逻辑需要我们自己写程序实现</p>
+<p>3、所有表的结构必须相同</p>
+<p>4、这个引擎中不保存任何数据，它的数据都是由分片表中取出来</p>
+<p>扩展1：写入数据时如何选择应该写入到哪个表？</p>
+<p>1、平均放数据到不同的表。</p>
+<p>​    我们可以直接使用记录的 ID 对表的数量取模</p>
+<p>​    流程：1. 先穝将要插入数据的 ID ，2. 再然后ID对表的数量取模，得到表的编号  ，3.通过编号拼出SQL 语句 （INSERT INTO <code>table_$n</code>)</p>
+<p>2、根据业务来分</p>
+<p>​    根据实际业务需要，我们可以将表按以下方式分：</p>
+<p>​    a. 按月份分12个表，1月份下的单保存到第1个表中，2月份 下的单保存到第2个表中…</p>
+<p>​    b. 按省份分表</p>
+<p>​    c. 按分类分表，比如，手机分类的商品放到一个表，电脑分类的商品放另一个表</p>
+<p>扩展2：如何生成唯一的ID。</p>
+<p>​    分表中一般不能使用自增长的ID，因为每个表的自增 ID 都是独立增长的，这就会导致多个分表中出现重复的自增ID。</p>
+<p>解决办法：</p>
+<ol>
+<li><p>在 Redis 中定义一个计数器</p>
+<p>每次要向分表中插入数据时先到 Redis 中把计数自增得到一个ID做这条记录的ID 插入到分表中。</p>
+</li>
+<li><p>单独创建一张表，表中只有一个自增ID字段，用来维护最大的ID</p>
+<p>每次插入数据时，先向这个维护最大ID的表中表中插入一个记录，得到这条记录的ID，然后用这个ID做为要插入的记录的ID插入到分表中。</p>
+</li>
+</ol>
+<h4 id="Archive"><a href="#Archive" class="headerlink" title="Archive"></a>Archive</h4><p>特点：以 zlib 对表数据进行压缩，磁盘 IO 更少</p>
+<p>只支持 <code>insert</code> 和 <code>select</code> 操作</p>
+<p>只能在自增ID上建立索引。</p>
+<p>适用于数据量很大、不经常修改的数据，比如：日志类的数据，采集数据等。</p>
+<p>总结：</p>
+<ol>
+<li>使用它可以节省硬盘空间</li>
+<li>日志类的数据，采集数据</li>
+<li>做历史数据的归档（冷、热数据分离）<h4 id="Memory-heap"><a href="#Memory-heap" class="headerlink" title="Memory/heap"></a>Memory/heap</h4>内存表使用哈希散列索引把数据保存在内存中，因此具有极快的速度，适合缓存中小型数据库。</li>
+</ol>
+<p>特点：</p>
+<ol>
+<li>数据保存在内存中，服务器重启后，表中数据会丢失，但表结构还在</li>
+<li>内存表占用的内存量不能走过 <code>max_heap_table_size</code> 值</li>
+<li>在内存表中所有字段都是固定长度，所以 char 和 varchar 没有区别，都是固定长度</li>
+<li>不支持 BLOG 和 TEXT 等大字段</li>
+<li>不支持事务，而且是表锁，当修改频繁时，性能会下降</li>
+</ol>
+<p>定义内存表：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> (...)  <span class="keyword">engine</span> = <span class="keyword">memory</span>/<span class="keyword">heap</span> ;  (一般使用memory，heap用得少了)</span><br></pre></td></tr></table></figure>
+
+
+
+<p>类似的软件：Redis。</p>
+<h4 id="FEDERATED"><a href="#FEDERATED" class="headerlink" title="FEDERATED"></a>FEDERATED</h4><p>这种引擎的表用来 <code>操作远程数据库</code>。</p>
+<p>比如我们现在有两个项目，项目A和项目B，现在我们希望这两个项目共享同一张用户表，这时我们就可以在项目B中创建一个 <code>federated</code> 引擎的表，然后让这个表去操作项目A中的用户表，这样两个项目就共同用户表了。</p>
+<p>federated 引擎表的特点：</p>
+<ol>
+<li>本地只存储表的结构信息（只有一个 .frm 文件保存表结构），不存储数据，数据都保存在远程数据库上</li>
+<li>对这张表的增、删、改、查等操作，实际上是操作远程表</li>
+</ol>
+<p><code>注意</code>：本地表的结构要和远程的表结构相同。</p>
+<ul>
+<li>开启方法</li>
+</ul>
+<p>在 my.cnf 中的 [mysqld] 中添加 <code>federated</code>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[mysqld]</span><br><span class="line">...</span><br><span class="line">federated</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>然后重启 MySQL 。</p>
+<ul>
+<li>建表语法</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> xx</span><br><span class="line">(..)<span class="keyword">engine</span>=federated</span><br><span class="line"><span class="keyword">connection</span>=<span class="string">'mysql://用户名:密码@主机IP:端口号/数据库名/表名'</span>;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>实战案例：创建两个数据库，让两个数据库能够共享某一张表。</p>
+<p>操作步骤：</p>
+<ol>
+<li><p>新建两个 MySQL 数据库的容器</p>
+</li>
+<li><p>创建第一个数据库上创建保存数据的库和表</p>
+</li>
+<li><p>开启第二个数据库上的 federated 引擎</p>
+</li>
+<li><p>创建 federated 引擎表连接第一个库中的表</p>
+</li>
+<li><p>测试是否可以使用这个表操作远程表</p>
+</li>
+</ol>
+<p>1、创建启动两个 MySQL 容器的编排文件</p>
+<p>docker-compose.yml</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">"3"</span></span><br><span class="line"></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">mysql01:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">mysql:5.7.24</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">"13306:3306"</span></span><br><span class="line">    <span class="attr">environment:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">MYSQL_ROOT_PASSWORD=123123</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">mysql02:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">mysql:5.7.24</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">"23306:3306"</span></span><br><span class="line">    <span class="attr">depends_on:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">mysql01</span></span><br><span class="line">    <span class="attr">links:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">"mysql01:mysql_remote"</span></span><br><span class="line">    <span class="attr">environment:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">MYSQL_ROOT_PASSWORD=123123</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>2、创建之后启动容器</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker-compose up -d</span><br></pre></td></tr></table></figure>
+
+
+
+<p>3、进入第一个数据库，并创建一个数据库和表（用来保存数据）</p>
+<p>a. 进入容器</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker exec -t 第一个容器名称 bash</span><br></pre></td></tr></table></figure>
+
+<p>b.连接mysql</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql -u root -p密码</span><br></pre></td></tr></table></figure>
+
+<p>c.建库和表</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">database</span> test_fed;</span><br><span class="line"><span class="keyword">use</span> test_fed;</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> test_fed(</span><br><span class="line">   <span class="keyword">id</span> <span class="built_in">int</span>,</span><br><span class="line">   <span class="keyword">name</span> <span class="built_in">varchar</span>(<span class="number">10</span>)</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+
+
+<p>4、进入第二个数据库配置远程表</p>
+<p>a. 进入容器</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker exec -t 第二个容器名称 bash</span><br></pre></td></tr></table></figure>
+
+<p>b. 启动 federated 引擎</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo federated &gt;&gt; /etc/mysql/mysql.conf.d/mysqld.cnf</span><br></pre></td></tr></table></figure>
+
+<p>重启 MySQL 服务器。</p>
+<p>c.连接mysql</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql -u root -p密码</span><br></pre></td></tr></table></figure>
+
+<p>d.建库和表</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">database</span> test_fed;</span><br><span class="line"><span class="keyword">use</span> test_fed;</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> fed(</span><br><span class="line">   <span class="keyword">id</span> <span class="built_in">int</span>,</span><br><span class="line">   <span class="keyword">name</span> <span class="built_in">varchar</span>(<span class="number">10</span>)</span><br><span class="line">)<span class="keyword">engine</span>=FEDERATED</span><br><span class="line"><span class="keyword">connection</span>=<span class="string">'mysql://root:123123@mysql_remote:3306/test_fed/test_fed'</span>;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>配置成功，现在操作这个表其实就是在操作远程的表。</p>
+<p>如何查看数据是否保存到了本地？</p>
+<p>每个 InnoDB 引擎的表在创建之后，就会在本地生成两个文件：.frm（保存表结构）和 .ibd（保存表中数据）。只要看本地是否有 .ibd 文件即可：</p>
+<ol>
+<li><p>在 mysql 执行以下指令以查看 mysql 中文件保存的目录</p>
+<p><code>show variables like &#39;%data%&#39;</code></p>
+</li>
+<li><p>然后到目录中查看是否存在 .ibd ，我们会发现远程表没有 .ibd 文件，说明数据没有保存在本地</p>
+</li>
+</ol>
+<p>只有一个 .frm 文件：</p>
+<p>总结：</p>
+<p>1、应用场景：这种引擎主要用来多个项目中数据库中表的共享 </p>
+<p>2、在创建时要和远程表结构相同</p>
+<p>3、这个引擎中不保存任何数据，它都是操作远程数据库中的数据</p>
+<h4 id="BLACKHOLE"><a href="#BLACKHOLE" class="headerlink" title="BLACKHOLE"></a>BLACKHOLE</h4><p>BlackHole ：黑洞引擎，写入的任何数据都会消失，用于记录 binlog 做复制的中继存储！</p>
+<p>使用BLACKHOLE存储引擎的表不存储任何数据，但如果 mysql 启用了二进制日志，SQL 语句被写入日志（并被复制到从服务器）。</p>
+<p>总结：</p>
+<ol>
+<li>不保存数据，但是会记录到 <code>binlog</code> 中（主从复制的原理就是 binlog）</li>
+<li>主从速度极快，对主服务器的负载比较慢</li>
+<li>主要用来做为主从服务器中中转站，以减少主服务器压力</li>
+</ol>
+<h3 id="表结构优化"><a href="#表结构优化" class="headerlink" title="表结构优化"></a>表结构优化</h3><p>总的原则：<code>建表是为表中的字段选择合适的字段类型</code><br>基本原则是：</p>
+<ol>
+<li>优先考虑数字类型，其次是日期类型，最后是字符串类型</li>
+<li>优先选择占用空间小并且够用的类型<h4 id="数字"><a href="#数字" class="headerlink" title="数字"></a>数字</h4><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>范围</th>
+<th>适用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>tinyint unsigned</td>
+<td>0~255</td>
+<td>只有几个可选值时使用，比如：支付状态、是否上架、年龄、性别等的字段</td>
+</tr>
+<tr>
+<td>smallint unsigned</td>
+<td>0~65535</td>
+<td>用户积分、评论数等</td>
+</tr>
+<tr>
+<td>mediumint unsigned</td>
+<td>0 ~ 16777215</td>
+<td>表自增ID</td>
+</tr>
+<tr>
+<td>int unsigned</td>
+<td>0~4294967295</td>
+<td>表自增ID、IP地址（INET_ATON、INET_NTOA）</td>
+</tr>
+<tr>
+<td>bigint unsigned</td>
+<td>0~18446744073709551615</td>
+<td>手机号码</td>
+</tr>
+</tbody></table>
+</li>
+</ol>
+<p><code>tinyint unsigned</code> 和 `tinyint signed’ 的区别。</p>
+<p>unsigned：没有负数，所以： tinyint unsigned ：0~255</p>
+<p>signed（默认）：有负数：所次 tinyint signed ：-127 ~ 128</p>
+<p>总结：如果数字中不包含负数就使用 unsigned 。</p>
+<h4 id="字符穿"><a href="#字符穿" class="headerlink" title="字符穿"></a>字符穿</h4><p>字符串类型常用的有以下几种：</p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>长度</th>
+<th>适用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>char</td>
+<td>0~255个 <code>字符</code></td>
+<td>长度固定的字符串，如经过加密的密码。</td>
+</tr>
+<tr>
+<td>varchar</td>
+<td>0~65535个<code>字节</code></td>
+<td>长度不固定的字符串，如姓名，商品名称、描述等。</td>
+</tr>
+<tr>
+<td>tinytintext</td>
+<td>0~255个<code>字节</code></td>
+<td>文本内容。</td>
+</tr>
+<tr>
+<td>text</td>
+<td>0~65535个<code>字节</code></td>
+<td>文本内容。</td>
+</tr>
+<tr>
+<td>mediumtext</td>
+<td>0~16,777,215个<code>字节</code></td>
+<td>文本内容。</td>
+</tr>
+<tr>
+<td>longtext</td>
+<td>0~4,294,967,295个<code>字节</code></td>
+<td>文本内容。</td>
+</tr>
+</tbody></table>
+<p>原则：一般我们尽量选择使用 char 和 varchar ，只有表中需要保存 <code>多个大文本字段</code> 导致 <code>超出表限制</code> （后面介绍）时选择 text 类型。</p>
+<p><code>char</code> 和 <code>varchar</code> 的区别</p>
+<p>1、最大容量不同（char 是 255 <code>字符</code>，varchar 是 65535 <code>字节</code>）</p>
+<p>2、char 是<code>定长</code>：实际占用硬盘的尺寸等于建表时指定的尺寸，无论里面数据的长度是多·</p>
+<p>3、varchar 是<code>变长</code>： 实际占用硬盘的尺寸主要由保存的数据的长度+1决定的。</p>
+<p>如何选择？</p>
+<ol>
+<li>如果字段中的值长度是固定的就选择 char 类型，如：密码（laravel 中加密的字符串都是60位）。</li>
+<li>其它不固定的长度就用 varchar 类型，比如：姓名、账号、标题等</li>
+</ol>
+<p>字符和字节什么关系？</p>
+<p>utf8：1字符 = 3字节</p>
+<p>gbk：1字符 = 2字节</p>
+<p>注意字符和字节对类型实际的影响：</p>
+<p>char(255) ：最多能保存255个字符。</p>
+<p>表 utf8 编码时：</p>
+<p>​    varchar(65535/3) ==&gt; （最多能保存 2 万多个字符）</p>
+<p>表 gb2312 编码时：</p>
+<p>​    varchar(65535/2) ==》（最多能保存 3 万多个字符）</p>
+<h2 id="时间字段"><a href="#时间字段" class="headerlink" title="时间字段"></a>时间字段</h2><p>保存时间时可以用 datetime 和 timestamp 类型。</p>
+<p>datetime 占8个字节，范围：1000-01-01 00:00:00 ~ 9999-12-31 23:59:59</p>
+<p>timestamp 占4个字节，范围：1970-01-01 ~ 2038-01-19（MySQL5.6+才开始支持）</p>
+<h4 id="not-null"><a href="#not-null" class="headerlink" title="not null"></a>not null</h4><p>因为 null 类型的字段需要进行额外的处理，所以我们应该尽量指定所有的字段都为 <code>not null</code> 。</p>
+<h4 id="表的限制"><a href="#表的限制" class="headerlink" title="表的限制"></a>表的限制</h4><p>1、每个表最多有 <code>4096</code> 个字段</p>
+<p>2、每个表所有字段（不包含 text、blog 类型字段）加起来不能超过 <code>65535</code> 个 <code>字节</code></p>
+<p>3、因为 text 类型的数据是额外单独存储的，所以性能比较慢，所以要选择时应该首先考虑 char 和 varchar ，只有在超过 65535 这个限制时才考虑使用 text 类型</p>
+<p>当表使用不同的编码时，一个字符占用的字节数是不同的，它们的关系是：</p>
+<ul>
+<li>utf8编码：1字符=3字节  </li>
+<li>gb2312：1字符=2字节</li>
+</ul>
+<p>问题：如果我希望一个表中有5个20000个字符的字段怎么办？</p>
+<p>使用：text 类型，因为 text 类型中的数据实际上是保存表外面的，只占用几个字节的表空间。注意：它的性能慢，慎用 。</p>
+<h4 id="适当的冗余"><a href="#适当的冗余" class="headerlink" title="适当的冗余"></a>适当的冗余</h4><p>我们在设计表结构时，应该尽量让我们的表结构简洁、明晰。但有些时候我们为了能够得到更好的查询性能，我们也需要适当的添加一些冗余字段。</p>
+<p>什么是冗余？</p>
+<p>冗余就是重复的字段。</p>
+<p>比如：用户名称、头像、商品评论数、销量等。</p>
+<h3 id="索引优化"><a href="#索引优化" class="headerlink" title="索引优化"></a>索引优化</h3><p><strong>索引是优化数据库最有效的方式之一 。</strong></p>
+<h4 id="BTREE-和-HASH-索引"><a href="#BTREE-和-HASH-索引" class="headerlink" title="BTREE 和 HASH 索引"></a>BTREE 和 HASH 索引</h4><p>索引从它的实现原理来分，可以分为：<code>BTree</code> 和 <code>HASH</code> 两种。</p>
+<p>简单的说：</p>
+<p>HASH：性能虽高，但是只支持 =、IN、&lt;&gt; 查询，而且不能避免排序，不能避免全表扫描等问题。</p>
+<p>BTree：支持范围查询、可以避免排序、可以避免全表扫描等。</p>
+<p>所以综上，我们更加需要 BTree 类型的索引，所以大多数引擎都支持 BTree索引，只有少数引擎支持HASH索引：</p>
+<h4 id="索引的类型"><a href="#索引的类型" class="headerlink" title="索引的类型"></a>索引的类型</h4><p>我们在创建索引时可以选择以下几种类型的索引：</p>
+<p>主键索引（primary key）：加快查询速度，索引字段的值不能重复，不能为空，一个表中只能有一个主键</p>
+<p>唯一索引（unique）：加快查询速度，索引字段的值不能重复</p>
+<p>普通索引（key)：加快查询速度 ，没有其它功能</p>
+<p>全文索引（fulltext）：对大文本进行 <code>分词</code> 索引，但 是MySQL 默认的全文索引对中文支持不好，所以基本不用</p>
+<p>联合索引：把多个字段联合起来创建一个索引</p>
+<p>前缀索引：只为字符串的前 N 个字符创建索引</p>
+<h4 id="索引的操作"><a href="#索引的操作" class="headerlink" title="索引的操作"></a>索引的操作</h4><p>可以使用以下 SQL 为表添加、删除索引：</p>
+<table>
+<thead>
+<tr>
+<th>指令</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>show index from 表名 \G</td>
+<td>查看索引</td>
+</tr>
+<tr>
+<td>alter table 表名 add primary key (字段名)</td>
+<td>添加主键索引</td>
+</tr>
+<tr>
+<td>alter table 表名 add unique 索引名称 (字段名)</td>
+<td>添加唯一索引</td>
+</tr>
+<tr>
+<td>alter table 表名 add index  索引名称 (字段名)</td>
+<td>添加普通索引</td>
+</tr>
+<tr>
+<td>drop index 索引名称 on 表名 ;</td>
+<td>删除普通/唯一索引</td>
+</tr>
+<tr>
+<td>alter table table_name drop primary key ;</td>
+<td>删除主键索引</td>
+</tr>
+</tbody></table>
+<h4 id="为哪些字段创建索引"><a href="#为哪些字段创建索引" class="headerlink" title="为哪些字段创建索引"></a>为哪些字段创建索引</h4><p>表中索引越多越好吗？</p>
+<p>答案是否定的。</p>
+<p>索引会加速查询的速度，但同时也会降低添加、修改、删除等写操作的速度，所以索引并不是越多越好的。我们一般建索引的原则是：</p>
+<ol>
+<li>经常与其他表进行连接的表，在连接的字段上应该建立索引（外键必须有索引）</li>
+<li>经常出现在 where 子句中的字段，特别是大表的字段</li>
+<li>索引应该建在选择性高的字段上</li>
+<li>索引应该建在小字段上（数字、日期）</li>
+<li>频繁修改的表，不要建立太多的索引</li>
+</ol>
+<h4 id="联合索引"><a href="#联合索引" class="headerlink" title="联合索引"></a>联合索引</h4><p>所以我们就可以把多个字符合并在一起创建一个索引：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">create table xxx(</span><br><span class="line">	...</span><br><span class="line">	a int unsigned  not null,</span><br><span class="line">	b int unsigned not null,</span><br><span class="line">	c int unsigned not null,</span><br><span class="line">	key a_b_c(a,b,c)</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+
+
+<p>说明：</p>
+<ol>
+<li>左原则：建了一个(a,b,c)的复合索引，那么实际等于建了(a),(a,b),(a,b,c)三个索引</li>
+<li>当同时使用这三个列进行查询、排序操作时，复合索引效率更高</li>
+<li>如果要单独对某个列进行查询，那么一定要放在最前面，如果多个列都需要单独查询，那么不能创建联合索引</li>
+</ol>
+<h4 id="前缀索引"><a href="#前缀索引" class="headerlink" title="前缀索引"></a>前缀索引</h4><p>避免使用以 % 开头的模糊查询，因为将无法使用任何索引</p>
+<p>查询以 XXX 开头时，我们可以使用前缀索引来进行优化</p>
+<p>添加前缀索引语法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ALTER TABLE table_name ADD KEY(column_name(prefix_length));</span><br></pre></td></tr></table></figure>
+
+<p>如：为前10个字符添加索引：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ALTER TABLE table_name ADD KEY(column_name(10));</span><br></pre></td></tr></table></figure>
+
+
+
+<p>InnoDB 和 MySQL 引擎前缀索引的限制</p>
+<p>对于INNODB存储引擎而言，默认前缀长度最大能支持767字节，在而开启<code>innodb_large_prefix</code>属性值的情况下，最大能支持3072字节。</p>
+<p>对于MyISAM的存储引擎而言，前缀长度限制为1000字节。</p>
+<h3 id="SQL-优化"><a href="#SQL-优化" class="headerlink" title="SQL 优化"></a>SQL 优化</h3><p>SQL 语句是操作数据库的主要手段，SQL 语句写的好坏直接影响查询的速度，我们应该让我们的 SQL 语句在执行时尽量使用上合适的索引。</p>
+<h4 id="定位慢SQL"><a href="#定位慢SQL" class="headerlink" title="定位慢SQL"></a>定位慢SQL</h4><p>要优化 SQL ，首先我们需要先找到有性能问题的 SQL 语句。Mysql 给我们提供了 <code>慢日志</code> 功能，慢日志会把所有执行的比较慢的 SQL 语句记录下来，这时我们就可以针对有问题的 SQL 语句进行分析和优化了。</p>
+<ul>
+<li>查看慢日志是否启用</li>
+</ul>
+<p>可以使用 <code>show global variables</code> 指令查看慢日志是否已经启用：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SHOW</span> <span class="keyword">GLOBAL</span> <span class="keyword">VARIABLES</span> <span class="keyword">like</span> <span class="string">'%slow%'</span>;</span><br></pre></td></tr></table></figure>
+
+<p>执行结果：</p>
+<p><img src="https://ws3.sinaimg.cn/large/005BYqpgly1fy9radmmpsj30le078dgi.jpg" alt=""></p>
+<ul>
+<li>启用慢日志</li>
+</ul>
+<p>我们有两种方式启用/禁用慢日志。</p>
+<p>1、修改配置文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">slow_query_log ：是否启用</span><br><span class="line">slow_query_log_file：慢日志保存的文件路径</span><br><span class="line">long_query_time：设置慢日志的伐值，单位是秒</span><br><span class="line">log_queries_not_using_indexes ：是否记录未使用索引的SQL</span><br></pre></td></tr></table></figure>
+
+
+
+<p>2、通过 SQL 语句启动</p>
+<p>我们可以使用 <code>SET GLOBAL</code> 指令修改这几个参数。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SET</span> <span class="keyword">GLOBAL</span> slow_query_log=<span class="string">"on"</span></span><br><span class="line"><span class="keyword">SET</span> <span class="keyword">GLOBAL</span> long_query_time=<span class="number">0.001</span>     // <span class="number">1</span>毫秒</span><br><span class="line"><span class="keyword">set</span> <span class="keyword">global</span> slow_query_log_file=<span class="string">"/var/lib/mysql/slow.log"</span></span><br></pre></td></tr></table></figure>
+
+
+
+<ul>
+<li>查看慢日志内容</li>
+</ul>
+<p>我们可以打开慢日志文件查看里面的内容：</p>
+<p><img src="https://ws3.sinaimg.cn/large/005BYqpgly1fy9raxox0ej31es0icdlb.jpg" alt=""></p>
+<p>在实际项目中，慢日志文件中的内容会非常的多，如果直接查看这个文件中的内容是非常不方便的，所以我们可以使用一些工具来查看这个日志。</p>
+<p>mysqldumpslow 是 MySQL 官方提供的查看慢日志的工具</p>
+<p>用法：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysqldumpslow -s 排序方式 -t 前几条 日志文件</span><br></pre></td></tr></table></figure>
+
+<p>参数说明：</p>
+<p>-s：排序方式，可用值（c,t,l,r,at,al,ar）</p>
+<p>​    c：总次数<br>​    t：总时间<br>​    l：锁的时间<br>​    r：总数据行<br>​    at,al,ar：a,l,r平均数</p>
+<p>-t：取前 t 条</p>
+<p>例、取出返回记录数最多的前10个</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysqldumpslow -s r -t 10 日志文件</span><br></pre></td></tr></table></figure>
+
+
+
+<p><img src="https://ws3.sinaimg.cn/large/005BYqpgly1fy9rbcq80aj30zs0h4dj2.jpg" alt=""></p>
+<h4 id="执行计划分析"><a href="#执行计划分析" class="headerlink" title="执行计划分析"></a>执行计划分析</h4><p>我们可以使用 <code>explain</code> 和 <code>desc</code> 两个指令来分析一条 SQL 语句的执行细节，然后我们就可以根据结果来优化我们的 SQL 语句 。</p>
+<p>我们在 SQL 语句前面加上 explain 就是分析这条 SQL 语句：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">explain</span> <span class="keyword">select</span> * <span class="keyword">from</span> privilege</span><br></pre></td></tr></table></figure>
+
+<p>分析之后得到的结果是：</p>
+<p><img src="https://ws3.sinaimg.cn/large/005BYqpgly1fy9rbra4g3j318u03uaaf.jpg" alt=""></p>
+<p>接下来我们来说明一下每个字段的含义：</p>
+<ul>
+<li>id：执行顺序 ，值相同时由上至下执行，值不同的，大的值先执行</li>
+<li>table：显示这一行的数据是关于哪张表的</li>
+<li>type：常用的类型有（性能从好到差）system&gt;const&gt;eq_ref&gt;ref&gt;range&gt;index&gt;all，如果是大表，一定要避免出现 all 的情况（全表扫描）</li>
+<li>rows：表示MySQL根据表统计信息及索引选用情况，估算的找到所需的记录所需要读取的行数</li>
+<li>filtered：返回结果的行数占所需读取行数的百分比，值越大越好</li>
+<li>key：实际使用的索引</li>
+</ul>
+<h2 id="查询列上不要使用表达式或者函数"><a href="#查询列上不要使用表达式或者函数" class="headerlink" title="查询列上不要使用表达式或者函数"></a>查询列上不要使用表达式或者函数</h2><ul>
+<li>函数</li>
+</ul>
+<p>在查询的字段上不要写表达式和函数，否则无法使用索引。</p>
+<p>比如有这样一条 SQL ：查询出30天之内下的订单：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> orders <span class="keyword">WHERE</span> <span class="keyword">to_days</span>(<span class="keyword">current_date</span>) - <span class="keyword">to_days</span>(created_at) &lt;= <span class="number">30</span></span><br></pre></td></tr></table></figure>
+
+<p>可以改造成：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> orders <span class="keyword">WHERE</span> created &gt;= <span class="keyword">date_sub</span>(<span class="keyword">current_date</span>,<span class="built_in">interval</span> <span class="number">30</span> <span class="keyword">day</span>)</span><br></pre></td></tr></table></figure>
+
+
+
+<ul>
+<li>表达式</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> … <span class="keyword">FROM</span> DEPT <span class="keyword">WHERE</span> SAL &gt; <span class="number">25000</span>/<span class="number">12</span></span><br></pre></td></tr></table></figure>
+
+<p>应该改成</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> … <span class="keyword">FROM</span> DEPT <span class="keyword">WHERE</span> SAL * <span class="number">12</span> &gt; <span class="number">25000</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="模糊查询"><a href="#模糊查询" class="headerlink" title="模糊查询"></a>模糊查询</h2><p>不要使用以 <code>%</code>开头的 like 查询，因为这种查询无法使用上索引，如：<code>WHERE goods_name LIKE &#39;%xxx%&#39;</code></p>
+<h4 id="不要使用-select"><a href="#不要使用-select" class="headerlink" title="不要使用 select *"></a>不要使用 select *</h4><p>在我们执行 SQL 语句时，经常为了方便而使用 <code>select *</code> 来查询，这是一个非常不好的习惯，因为当表中存在大字段时（大文本字段），查询速度将会非常的慢。</p>
+<p>所以我们在平时写SQL语句时，只避免出现 <code>SELECT *</code>，应该只选择我们需要使用的字段。</p>
+<h4 id="分页查询"><a href="#分页查询" class="headerlink" title="分页查询"></a>分页查询</h4><p>我们平时实现翻页都是使用 limit 来实现的，比如：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> goods <span class="keyword">LIMIT</span> <span class="number">0</span>,<span class="number">10</span></span><br></pre></td></tr></table></figure>
+
+<p>但是当数据量比较大时，翻页会比较慢，比如，翻页到第1000页。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM goods LIMIT 10000,10</span><br></pre></td></tr></table></figure>
+
+
+
+<p>解决办法：</p>
+<p>1、不要查询大字段（不要使用*）（大本文本字段）</p>
+<p>2、网站不提供太多的翻页，比如百度最多到76页。</p>
+<p>3、修改 SQL 语句为：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> goods <span class="keyword">WHERE</span> <span class="keyword">id</span> <span class="keyword">IN</span> (</span><br><span class="line">    <span class="keyword">SELECT</span> a.id <span class="keyword">FROM</span> (</span><br><span class="line">       <span class="keyword">SELECT</span> <span class="keyword">id</span> <span class="keyword">FROM</span> goods <span class="keyword">LIMIT</span> <span class="number">10000</span>,<span class="number">10</span></span><br><span class="line">    ) a</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+<h4 id="覆盖索引"><a href="#覆盖索引" class="headerlink" title="覆盖索引"></a>覆盖索引</h4><p>索引包含（亦称覆盖）所有需要查询的字段的值，我们称这种索引为覆盖索引</p>
+<p>当发起一个被索引覆盖的查询时，在explain的Extra列可以看到 <code>Using index</code> 的标识。</p>
+<p><img src="https://ws3.sinaimg.cn/large/005BYqpgly1fy9rcfdvp5j31ag042mxs.jpg" alt=""></p>
+<p>回想一下，如果查询只需要扫描索引而无须回表，将带来诸多好处。</p>
+<p>（1）索引条目通常远小于数据行大小，如果只读取索引，MySQL就会极大地减少数据访问量。</p>
+<p>（2）索引按照列值顺序存储，对于I/O密集的范围查询会比随机从磁盘中读取每一行数据的I/O要少很多。</p>
+<p>（3）InnoDB的辅助索引（亦称二级索引）在叶子节点中保存了行的主键值，如果二级索引能够覆盖查询，则可不必对主键索引进行二次查询了。</p>
+<p>​    覆盖索引就是从索引中直接获取查询结果，要使用覆盖索引需要注意select查询列中包含在索引列中；where条件包含索引列或者复合索引的前导列；查询结果的字段长度尽可能少。</p>
+
+      </div>
+      
+        <br>
+        
+
+
+  <section class='meta' id="footer-meta">
+    <div class='new-meta-box'>
+      
+        
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2020-01-05T22:06:04+08:00">
+  <a class='notlink'>
+    <i class="fas fa-clock" aria-hidden="true"></i>
+    <p>更新于 2020年1月5日</p>
+  </a>
+</div>
+
+        
+      
+        
+          
+  
+  <div class="new-meta-item meta-tags"><a class="tag" href="/tags/MySQL/" rel="nofollow"><i class="fas fa-tag" aria-hidden="true"></i><p>MySQL</p></a></div>
+
+
+        
+      
+        
+          
+  <div class="new-meta-item share -mob-share-list">
+  <div class="-mob-share-list share-body">
+    
+      
+        <a class="-mob-share-qq" title="QQ好友" rel="external nofollow noopener noreferrer"
+          
+          href="http://connect.qq.com/widget/shareqq/index.html?url=https://jiaobantang.github.io/2018/12/17/mysql-opz/&title=MySQL优化 | 搅拌糖&summary=从四个方面来复习一下数据库的优化
+表引擎优化：建表时选择最合适的引擎。
+表结构优化：建表时选择最合适的字段类型，让表尽量轻量。
+索引优化：为表创建高效索引，以提高表的查询速度。
+SQL 优化：编写高效的 SQL 语句，以加快查询速度。"
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/qq.png">
+          
+        </a>
+      
+    
+      
+        <a class="-mob-share-qzone" title="QQ空间" rel="external nofollow noopener noreferrer"
+          
+          href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://jiaobantang.github.io/2018/12/17/mysql-opz/&title=MySQL优化 | 搅拌糖&summary=从四个方面来复习一下数据库的优化
+表引擎优化：建表时选择最合适的引擎。
+表结构优化：建表时选择最合适的字段类型，让表尽量轻量。
+索引优化：为表创建高效索引，以提高表的查询速度。
+SQL 优化：编写高效的 SQL 语句，以加快查询速度。"
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/qzone.png">
+          
+        </a>
+      
+    
+      
+        <a class="-mob-share-weibo" title="微博" rel="external nofollow noopener noreferrer"
+          
+          href="http://service.weibo.com/share/share.php?url=https://jiaobantang.github.io/2018/12/17/mysql-opz/&title=MySQL优化 | 搅拌糖&summary=从四个方面来复习一下数据库的优化
+表引擎优化：建表时选择最合适的引擎。
+表结构优化：建表时选择最合适的字段类型，让表尽量轻量。
+索引优化：为表创建高效索引，以提高表的查询速度。
+SQL 优化：编写高效的 SQL 语句，以加快查询速度。"
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/weibo.png">
+          
+        </a>
+      
+    
+  </div>
+</div>
+
+
+
+        
+      
+    </div>
+  </section>
+
+
+      
+      
+          <div class="prev-next">
+              
+                  <section class="prev">
+                      <span class="art-item-left">
+                          <h6><i class="fas fa-chevron-left" aria-hidden="true"></i>&nbsp;上一页</h6>
+                          <h4>
+                              <a href="/2018/12/19/php-oop/" rel="prev" title="PHPer-OOP">
+                                
+                                    PHPer-OOP
+                                
+                              </a>
+                          </h4>
+                          
+                              
+                              <h6 class="tags">
+                                  <a class="tag" href="/tags/PHP/"><i class="fas fa-tag fa-fw" aria-hidden="true"></i> PHP</a> <a class="tag" href="/tags/OOP/"><i class="fas fa-tag fa-fw" aria-hidden="true"></i> OOP</a>
+                              </h6>
+                          
+                      </span>
+                  </section>
+              
+              
+                  <section class="next">
+                      <span class="art-item-right" aria-hidden="true">
+                          <h6>下一页&nbsp;<i class="fas fa-chevron-right" aria-hidden="true"></i></h6>
+                          <h4>
+                              <a href="/2018/12/12/mysql-pdo/" rel="prev" title="PHP-PDO">
+                                  
+                                      PHP-PDO
+                                  
+                              </a>
+                          </h4>
+                          
+                              
+                              <h6 class="tags">
+                                  <a class="tag" href="/tags/MySQL/"><i class="fas fa-tag fa-fw" aria-hidden="true"></i> MySQL</a> <a class="tag" href="/tags/PDO/"><i class="fas fa-tag fa-fw" aria-hidden="true"></i> PDO</a>
+                              </h6>
+                          
+                      </span>
+                  </section>
+              
+          </div>
+      
+    </section>
+  </article>
+
+
+
+  <!-- 显示推荐文章和评论 -->
+
+
+
+  <article class="post white-box comments">
+    <section class="article typo">
+      <h4><i class="fas fa-comments fa-fw" aria-hidden="true"></i>&nbsp;评论</h4>
+      
+      
+      
+      
+        <section id="comments">
+          <div id="valine_container" class="valine_thread">
+            <i class="fas fa-spinner fa-spin fa-fw"></i>
+          </div>
+        </section>
+      
+    </section>
+  </article>
+
+
+
+
+
+
+<!-- 根据页面mathjax变量决定是否加载MathJax数学公式js -->
+
+
+
+  <script>
+    window.subData = {
+      title: 'MySQL优化',
+      tools: true
+    }
+  </script>
+
+
+</div>
+<aside class='l_side'>
+  
+    
+    
+      
+      
+        
+          
+          
+            
+              <section class='widget shake author'>
+  <div class='content pure'>
+    
+      <div class='avatar'>
+        <img class='avatar' src='http://cdn.treelo.xin/avatar.png'/>
+      </div>
+    
+    
+    
+      <div class="social-wrapper">
+        
+          
+            <a href="/mailto:847280718@qq.com"
+              class="social fas fa-envelope flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+            </a>
+          
+        
+          
+            <a href="https://github.com/JIAOBANTANG"
+              class="social fab fa-github flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+            </a>
+          
+        
+          
+            <a href="https://codepen.io/jiaobantang/pens/public/"
+              class="social fab fa-codepen flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+            </a>
+          
+        
+          
+            <a href="https://music.163.com/#/user/home?id=65219633"
+              class="social fas fa-headphones-alt flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+            </a>
+          
+        
+      </div>
+    
+  </div>
+</section>
+
+            
+          
+        
+          
+          
+        
+          
+          
+        
+          
+          
+        
+          
+          
+        
+          
+          
+        
+      
+        
+          
+          
+        
+          
+          
+            
+              
+  <section class='widget toc-wrapper'>
+    
+<header class='pure'>
+  <div><i class="fas fa-list fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;本文目录</div>
+  
+    <!-- <div class='wrapper'><a class="s-toc rightBtn" rel="external nofollow noopener noreferrer noopener" href="javascript:void(0)" target="_blank"><i class="fas fa-thumbtack fa-fw"></i></a></div> -->
+  
+</header>
+
+    <div class='content pure'>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#从四个方面来复习一下数据库的优化"><span class="toc-text">从四个方面来复习一下数据库的优化</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#表引擎优化"><span class="toc-text">表引擎优化</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#InnoDB"><span class="toc-text">InnoDB</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#MyISAM"><span class="toc-text">MyISAM</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#MRG-MyISAM-MERGE"><span class="toc-text">MRG_MyISAM (MERGE)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Archive"><span class="toc-text">Archive</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Memory-heap"><span class="toc-text">Memory/heap</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#FEDERATED"><span class="toc-text">FEDERATED</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#BLACKHOLE"><span class="toc-text">BLACKHOLE</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#表结构优化"><span class="toc-text">表结构优化</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#数字"><span class="toc-text">数字</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#字符穿"><span class="toc-text">字符穿</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#时间字段"><span class="toc-text">时间字段</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#not-null"><span class="toc-text">not null</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#表的限制"><span class="toc-text">表的限制</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#适当的冗余"><span class="toc-text">适当的冗余</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#索引优化"><span class="toc-text">索引优化</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#BTREE-和-HASH-索引"><span class="toc-text">BTREE 和 HASH 索引</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#索引的类型"><span class="toc-text">索引的类型</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#索引的操作"><span class="toc-text">索引的操作</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#为哪些字段创建索引"><span class="toc-text">为哪些字段创建索引</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#联合索引"><span class="toc-text">联合索引</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#前缀索引"><span class="toc-text">前缀索引</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SQL-优化"><span class="toc-text">SQL 优化</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#定位慢SQL"><span class="toc-text">定位慢SQL</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#执行计划分析"><span class="toc-text">执行计划分析</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#查询列上不要使用表达式或者函数"><span class="toc-text">查询列上不要使用表达式或者函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#模糊查询"><span class="toc-text">模糊查询</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#不要使用-select"><span class="toc-text">不要使用 select *</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#分页查询"><span class="toc-text">分页查询</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#覆盖索引"><span class="toc-text">覆盖索引</span></a></li></ol></li></ol></li></ol>
+    </div>
+  </section>
+
+
+            
+          
+        
+          
+          
+        
+          
+          
+        
+          
+          
+        
+          
+          
+        
+      
+        
+          
+          
+        
+          
+          
+        
+          
+          
+            
+              <section class='widget grid'>
+  
+<header class='pure'>
+  <div><i class="fas fa-map-signs fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;站内导航</div>
+  
+</header>
+
+  <div class='content pure'>
+    <ul class="grid navgation">
+      
+        <li><a class="flat-box" title="/" href="/"
+          
+          
+          id="home">
+          
+            <i class="fas fa-clock fa-fw" aria-hidden="true"></i>
+          
+          近期文章
+        </a></li>
+      
+        <li><a class="flat-box" title="/archives/" href="/archives/"
+          
+            rel="nofollow"
+          
+          
+          id="archives">
+          
+            <i class="fas fa-archive fa-fw" aria-hidden="true"></i>
+          
+          文章归档
+        </a></li>
+      
+        <li><a class="flat-box" title="/projects/" href="/projects/"
+          
+          
+          id="projects">
+          
+            <i class="fas fa-code-branch fa-fw" aria-hidden="true"></i>
+          
+          开源项目
+        </a></li>
+      
+        <li><a class="flat-box" title="/friends/" href="/friends/"
+          
+            rel="nofollow"
+          
+          
+          id="friends">
+          
+            <i class="fas fa-link fa-fw" aria-hidden="true"></i>
+          
+          我的友链
+        </a></li>
+      
+        <li><a class="flat-box" title="/about/" href="/about/"
+          
+            rel="nofollow"
+          
+          
+          id="about">
+          
+            <i class="fas fa-info-circle fa-fw" aria-hidden="true"></i>
+          
+          关于小站
+        </a></li>
+      
+    </ul>
+  </div>
+</section>
+
+            
+          
+        
+          
+          
+        
+          
+          
+        
+          
+          
+        
+      
+        
+          
+          
+        
+          
+          
+        
+          
+          
+        
+          
+          
+            
+              
+  <section class='widget category'>
+    
+<header class='pure'>
+  <div><i class="fas fa-folder-open fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;文章分类</div>
+  
+    <a class="rightBtn"
+    
+      rel="nofollow"
+    
+    
+    href="/blog/categories/"
+    title="blog/categories/">
+    <i class="fas fa-expand-arrows-alt fa-fw"></i></a>
+  
+</header>
+
+    <div class='content pure'>
+      <ul class="entry">
+        
+          <li><a class="flat-box" title="/categories/Coding/" href="/categories/Coding/"><div class='name'>Coding</div><div class='badge'>(19)</div></a></li>
+        
+          <li><a class="flat-box child" title="/categories/Coding/Design/" href="/categories/Coding/Design/"><div class='name'>Design</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box child" title="/categories/Coding/Docker/" href="/categories/Coding/Docker/"><div class='name'>Docker</div><div class='badge'>(5)</div></a></li>
+        
+          <li><a class="flat-box child" title="/categories/Coding/JS/" href="/categories/Coding/JS/"><div class='name'>JS</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box child" title="/categories/Coding/MySQL/" href="/categories/Coding/MySQL/"><div class='name'>MySQL</div><div class='badge'>(3)</div></a></li>
+        
+          <li><a class="flat-box child" title="/categories/Coding/PHP/" href="/categories/Coding/PHP/"><div class='name'>PHP</div><div class='badge'>(2)</div></a></li>
+        
+          <li><a class="flat-box child" title="/categories/Coding/PSR/" href="/categories/Coding/PSR/"><div class='name'>PSR</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box child" title="/categories/Coding/Swoole/" href="/categories/Coding/Swoole/"><div class='name'>Swoole</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box child" title="/categories/Coding/Web/" href="/categories/Coding/Web/"><div class='name'>Web</div><div class='badge'>(3)</div></a></li>
+        
+          <li><a class="flat-box" title="/categories/PHP/" href="/categories/PHP/"><div class='name'>PHP</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box" title="/categories/Self/" href="/categories/Self/"><div class='name'>Self</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box" title="/categories/%E8%A1%80%E5%B0%8F%E6%9D%BF/" href="/categories/%E8%A1%80%E5%B0%8F%E6%9D%BF/"><div class='name'>血小板</div><div class='badge'>(1)</div></a></li>
+        
+      </ul>
+    </div>
+  </section>
+
+
+            
+          
+        
+          
+          
+        
+          
+          
+        
+      
+        
+          
+          
+        
+          
+          
+        
+          
+          
+        
+          
+          
+        
+          
+          
+            
+              
+  <section class='widget tagcloud'>
+    
+<header class='pure'>
+  <div><i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;热门标签</div>
+  
+    <a class="rightBtn"
+    
+      rel="nofollow"
+    
+    
+    href="/blog/tags/"
+    title="blog/tags/">
+    <i class="fas fa-expand-arrows-alt fa-fw"></i></a>
+  
+</header>
+
+    <div class='content pure'>
+      <a href="/tags/Coding/" style="font-size: 20.67px; color: #6c6c6c">Coding</a> <a href="/tags/Cool/" style="font-size: 14px; color: #999">Cool</a> <a href="/tags/JavaScript/" style="font-size: 14px; color: #999">JavaScript</a> <a href="/tags/MySQL/" style="font-size: 17.33px; color: #828282">MySQL</a> <a href="/tags/OOP/" style="font-size: 14px; color: #999">OOP</a> <a href="/tags/PDO/" style="font-size: 14px; color: #999">PDO</a> <a href="/tags/PHP/" style="font-size: 14px; color: #999">PHP</a> <a href="/tags/Swoole/" style="font-size: 14px; color: #999">Swoole</a> <a href="/tags/docker/" style="font-size: 24px; color: #555">docker</a> <a href="/tags/live2D/" style="font-size: 14px; color: #999">live2D</a> <a href="/tags/nginx/" style="font-size: 14px; color: #999">nginx</a> <a href="/tags/php/" style="font-size: 14px; color: #999">php</a> <a href="/tags/snowflake/" style="font-size: 14px; color: #999">snowflake</a> <a href="/tags/%E5%9C%B0%E5%9B%BE%E7%9B%B8%E5%86%8C/" style="font-size: 14px; color: #999">地图相册</a> <a href="/tags/%E6%8E%A5%E5%8F%A3%E5%BC%80%E5%8F%91/" style="font-size: 14px; color: #999">接口开发</a> <a href="/tags/%E6%94%B9%E5%8F%98/" style="font-size: 14px; color: #999">改变</a> <a href="/tags/%E6%97%A5%E7%AD%BE/" style="font-size: 14px; color: #999">日签</a> <a href="/tags/%E6%9C%8D%E5%8A%A1%E7%AB%AF/" style="font-size: 14px; color: #999">服务端</a> <a href="/tags/%E7%B3%96%E7%B3%96%E6%97%A5%E7%AD%BE/" style="font-size: 14px; color: #999">糖糖日签</a> <a href="/tags/%E8%87%AA%E6%88%91%E5%8F%91%E5%B1%95/" style="font-size: 14px; color: #999">自我发展</a> <a href="/tags/%E8%A1%80%E5%B0%8F%E6%9D%BF/" style="font-size: 14px; color: #999">血小板</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 14px; color: #999">设计模式</a>
+    </div>
+  </section>
+
+
+            
+          
+        
+          
+          
+        
+      
+        
+          
+          
+        
+          
+          
+        
+          
+          
+        
+          
+          
+        
+          
+          
+        
+          
+          
+            
+              <section class='widget list'>
+  
+<header class='pure'>
+  <div><i class="fas fa-thumbs-up fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;强烈推荐</div>
+  
+</header>
+
+  <div class='content pure'>
+    <ul class="entry">
+      
+        <li><a class="flat-box" title="/2019/06/09/photo-map/" href="/2019/06/09/photo-map/"
+          
+          
+          >
+          <div class='name'>
+            
+              <i class=" fa-fw" aria-hidden="true"></i>
+            
+            &nbsp;&nbsp;地图相册
+          </div>
+          
+        </a></li>
+      
+    </ul>
+  </div>
+</section>
+
+            
+          
+        
+      
+        
+          
+          
+        
+          
+          
+        
+          
+          
+        
+          
+          
+        
+          
+          
+        
+          
+          
+        
+      
+    
+
+  
+</aside>
+
+<footer id="footer" class="clearfix">
+  
+  
+    <div class="social-wrapper">
+      
+        
+          <a href="/mailto:847280718@qq.com"
+            class="social fas fa-envelope flat-btn"
+            target="_blank"
+            rel="external nofollow noopener noreferrer">
+          </a>
+        
+      
+        
+          <a href="https://github.com/JIAOBANTANG"
+            class="social fab fa-github flat-btn"
+            target="_blank"
+            rel="external nofollow noopener noreferrer">
+          </a>
+        
+      
+        
+          <a href="https://codepen.io/jiaobantang/pens/public/"
+            class="social fab fa-codepen flat-btn"
+            target="_blank"
+            rel="external nofollow noopener noreferrer">
+          </a>
+        
+      
+        
+          <a href="https://music.163.com/#/user/home?id=65219633"
+            class="social fas fa-headphones-alt flat-btn"
+            target="_blank"
+            rel="external nofollow noopener noreferrer">
+          </a>
+        
+      
+    </div>
+  
+  <br>
+  <div>
+    <div class="footer">
+      <p><span style="color:rgb(61, 197, 80);">种一棵树最好的时间是十年前，其次是现在</span></p>
+
+    </div>
+
+  </div>
+  <!-- <div><p>Blog content follows the <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener">Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0) License</a></p>
+</div> -->
+  <div>
+    本站使用
+    <a href="https://xaoxuu.com/wiki/material-x/" target="_blank" class="codename">Material X</a>
+    作为主题
+    
+      ，
+      总访问量为
+      <span id="busuanzi_value_site_pv"><i class="fas fa-spinner fa-spin fa-fw" aria-hidden="true"></i></span>
+      次
+    
+    。
+  </div>
+  <div id="sitetime"></div>
+</footer>
+<script>setLoadingBarProgress(80);</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.0/jquery.min.js"></script>
+<!-- 血小板 -->
+<div id="landlord">
+  <div class="message" style="opacity:0"></div>
+  <canvas id="live2d" width="560" height="500" class="live2d"></canvas>
+  <div class="hide-button">隐藏</div>
+</div>
+<!-- 血小板-->
+<script type="text/javascript">
+  var message_Path = '/live2d/'
+</script>
+<script type="text/javascript" src="/live2d/js/live2d.js"></script>
+<script type="text/javascript" src="/live2d/js/message.js"></script>
+<script type="text/javascript">
+  loadlive2d("live2d", "/live2d/model/xiaoban/model.json");
+</script>
+<!-- 点击特效，输入特效 运行时间 -->
+<script type="text/javascript" src="/cool/cooltext.js"></script>
+<script type="text/javascript" src="/cool/clicklove.js"></script>
+<script type="text/javascript" src="/cool/sitetime.js"></script>
+<script type="text/javascript" src="/cool/banner.js"></script>
+
+
+      <script>setLoadingBarProgress(60);</script>
+    </div>
+    <a class="s-top fas fa-arrow-up fa-fw" href='javascript:void(0)' target="_blank" rel="noopener"></a>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+
+  <script>
+    var GOOGLE_CUSTOM_SEARCH_API_KEY = "";
+    var GOOGLE_CUSTOM_SEARCH_ENGINE_ID = "";
+    var ALGOLIA_API_KEY = "";
+    var ALGOLIA_APP_ID = "";
+    var ALGOLIA_INDEX_NAME = "";
+    var AZURE_SERVICE_NAME = "";
+    var AZURE_INDEX_NAME = "";
+    var AZURE_QUERY_KEY = "";
+    var BAIDU_API_ID = "";
+    var SEARCH_SERVICE = "hexo" || "hexo";
+    var ROOT = "/"||"/";
+    if(!ROOT.endsWith('/'))ROOT += '/';
+  </script>
+
+<script src="//instant.page/1.2.2" type="module" integrity="sha384-2xV8M5griQmzyiY3CDqh1dn4z3llDVqZDqzjzcY+jCBCk/a5fXJmuZ/40JJAPeoU"></script>
+
+
+  <script async src="https://cdn.jsdelivr.net/npm/scrollreveal@4.0.5/dist/scrollreveal.min.js"></script>
+  <script type="text/javascript">
+    $(function() {
+      const $reveal = $('.reveal');
+      if ($reveal.length === 0) return;
+      const sr = ScrollReveal({ distance: 0 });
+      sr.reveal('.reveal');
+    });
+  </script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/node-waves@0.7.6/dist/waves.min.js"></script>
+  <script type="text/javascript">
+    $(function() {
+      Waves.attach('.flat-btn', ['waves-button']);
+      Waves.attach('.float-btn', ['waves-button', 'waves-float']);
+      Waves.attach('.float-btn-light', ['waves-button', 'waves-float', 'waves-light']);
+      Waves.attach('.flat-box', ['waves-block']);
+      Waves.attach('.float-box', ['waves-block', 'waves-float']);
+      Waves.attach('.waves-image');
+      Waves.init();
+    });
+  </script>
+
+
+  <script async src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-busuanzi@2.3/js/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+  
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-backstretch/2.0.4/jquery.backstretch.min.js"></script>
+    <script type="text/javascript">
+      $(function(){
+        if ('.cover') {
+          $('.cover').backstretch(
+          ["https://img.vim-cn.com/29/91197b04c13f512f734a76d4ac422d89dbe229.jpg"],
+          {
+            duration: "6000",
+            fade: "2500"
+          });
+        } else {
+          $.backstretch(
+          ["https://img.vim-cn.com/29/91197b04c13f512f734a76d4ac422d89dbe229.jpg"],
+          {
+            duration: "6000",
+            fade: "2500"
+          });
+        }
+      });
+    </script>
+  
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  
+    
+      <script src="https://cdn.jsdelivr.net/gh/xaoxuu/volantis@1.0.6/js/volantis.min.js"></script>
+    
+  
+  <script>
+  var GUEST_INFO = ['nick','mail','link'];
+  var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+    return GUEST_INFO.indexOf(item) > -1
+  });
+  var notify = 'true' == true;
+  var verify = 'true' == true;
+  var valine = new Valine();
+  valine.init({
+    el: '#valine_container',
+    notify: notify,
+    verify: verify,
+    guest_info: guest_info,
+    
+    appId: "yo0TeECrgG85JBeGdjAUpWyu-gzGzoHsz",
+    appKey: "0u655gRhnOM9X7qL0x2VNFQG",
+    placeholder: "快来评论吧~",
+    pageSize:'10',
+    avatar:'mp',
+    lang:'zh-cn',
+    highlight:'true'
+  })
+  </script>
+
+
+
+  <script src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-material-x@19.9/js/app.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-material-x@19.9/js/search.js"></script>
+
+
+
+
+<!-- 复制 -->
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script>
+  let COPY_SUCCESS = "复制成功";
+  let COPY_FAILURE = "复制失败";
+  /*页面载入完成后，创建复制按钮*/
+  !function (e, t, a) {
+    /* code */
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '  <i class="fa fa-copy"></i><span>复制</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+
+      clipboard.on('success', function(e) {
+        //您可以加入成功提示
+        console.info('Action:', e.action);
+        console.info('Text:', e.text);
+        console.info('Trigger:', e.trigger);
+        success_prompt(COPY_SUCCESS);
+        e.clearSelection();
+      });
+      clipboard.on('error', function(e) {
+        //您可以加入失败提示
+        console.error('Action:', e.action);
+        console.error('Trigger:', e.trigger);
+        fail_prompt(COPY_FAILURE);
+      });
+    }
+    initCopyCode();
+
+  }(window, document);
+
+  /**
+   * 弹出式提示框，默认1.5秒自动消失
+   * @param message 提示信息
+   * @param style 提示样式，有alert-success、alert-danger、alert-warning、alert-info
+   * @param time 消失时间
+   */
+  var prompt = function (message, style, time)
+  {
+      style = (style === undefined) ? 'alert-success' : style;
+      time = (time === undefined) ? 1500 : time*1000;
+      $('<div>')
+          .appendTo('body')
+          .addClass('alert ' + style)
+          .html(message)
+          .show()
+          .delay(time)
+          .fadeOut();
+  };
+
+  // 成功提示
+  var success_prompt = function(message, time)
+  {
+      prompt(message, 'alert-success', time);
+  };
+
+  // 失败提示
+  var fail_prompt = function(message, time)
+  {
+      prompt(message, 'alert-danger', time);
+  };
+
+  // 提醒
+  var warning_prompt = function(message, time)
+  {
+      prompt(message, 'alert-warning', time);
+  };
+
+  // 信息提示
+  var info_prompt = function(message, time)
+  {
+      prompt(message, 'alert-info', time);
+  };
+
+</script>
+
+
+<!-- fancybox -->
+<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+<script>
+  let LAZY_LOAD_IMAGE = "";
+  $(".article-entry").find("fancybox").find("img").each(function () {
+      var element = document.createElement("a");
+      $(element).attr("data-fancybox", "gallery");
+      $(element).attr("href", $(this).attr("src"));
+      /* 图片采用懒加载处理时,
+       * 一般图片标签内会有个属性名来存放图片的真实地址，比如 data-original,
+       * 那么此处将原本的属性名src替换为对应属性名data-original,
+       * 修改如下
+       */
+       if (LAZY_LOAD_IMAGE) {
+         $(element).attr("href", $(this).attr("data-original"));
+       }
+      $(this).wrap(element);
+  });
+</script>
+
+
+
+
+
+  <script>setLoadingBarProgress(100);</script>
+</body>
+</html>
